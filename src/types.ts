@@ -1,6 +1,6 @@
 export interface TaskType {
   id: string;
-  date: Date;
+  createdAt: string;
   task: string;
   completed: boolean;
 }
