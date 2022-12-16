@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // imports
-import { defineProps, nextTick, ref } from "vue";
+import { nextTick, ref } from "vue";
 import type { TaskType } from "@/types";
 import { useTaskStore } from "@/stores/task";
 
@@ -18,8 +18,8 @@ function handleBlur() {
 }
 async function handleEditClick() {
   canEdit.value = true;
+  await nextTick();
   if (edit.value) {
-    await nextTick();
     edit.value.focus();
   }
 }
@@ -30,34 +30,85 @@ function handleEditSumbit(id: string) {
 </script>
 
 <template>
-  <button @click="() => taskStore.toggleComplete(task.id)">complete</button>
-  <form @submit.prevent="() => handleEditSumbit(task.id)">
-    <input
-      ref="edit"
-      class="task"
-      type="text"
-      @input="taskStore.inputEditTask"
-      :value="task.task"
-      :disabled="!canEdit"
-      :class="[task.completed ? 'strikethrough' : undefined]"
-      :onblur="handleBlur"
+  <button @click="() => taskStore.toggleComplete(task.id)" class="completeBtn">
+    <font-awesome-icon
+      v-if="task.completed"
+      class="btn"
+      icon="fa-regular fa-square-check"
     />
-  </form>
-  <div>
-    <button v-if="!canEdit" @click="handleEditClick">edit</button>
-    <button v-else type="reset" @click="handleBlur">cancel</button>
-    <button @click="() => taskStore.deleteTask(task.id)">delete</button>
+    <font-awesome-icon v-else class="btn" icon="fa-regular fa-square" />
+  </button>
+  <div class="taskContainer">
+    <form v-if="canEdit" @submit.prevent="() => handleEditSumbit(task.id)">
+      <input
+        ref="edit"
+        type="text"
+        @input="taskStore.inputEditTask"
+        :value="task.task"
+        :disabled="!canEdit"
+        :onblur="handleBlur"
+        maxlength="85"
+      />
+    </form>
+    <p v-else :class="[task.completed ? 'strikethrough' : undefined]">
+      {{ task.task }}
+    </p>
   </div>
+  <button v-if="!canEdit" @click="handleEditClick" class="controlBtn">
+    <font-awesome-icon class="btn" icon="fa-solid fa-edit" />
+  </button>
+  <button v-else type="reset" @click="handleBlur" class="controlBtn">
+    <font-awesome-icon class="btn" icon="fa-solid fa-rotate-left" />
+  </button>
+  <button @click="() => taskStore.deleteTask(task.id)" class="controlBtn">
+    <font-awesome-icon class="btn" icon="fa-solid fa-xmark" size="lg" />
+  </button>
 </template>
 
 <style scoped>
+button {
+  margin: 0 3px;
+  color: inherit;
+}
+.btn {
+  cursor: pointer;
+}
+.taskContainer {
+  width: 90%;
+  overflow-x: hidden;
+  padding: 0 10px;
+  /* outline: 1px solid red; */
+}
+
+.taskContainer input {
+  width: 100%;
+  font-size: 0.8rem;
+  font-family: inherit;
+  margin: 0;
+  border: none;
+  outline: none;
+  background: none;
+  color: inherit;
+  border-radius: 5px;
+}
+
+.taskContainer p {
+  word-wrap: break-word;
+  font-weight: 500;
+}
+
 .task {
   background: none;
   outline: none;
   border: none;
 }
 
+input:focus {
+  outline: 1px solid tomato;
+}
+
 .strikethrough {
   text-decoration: line-through;
+  opacity: 0.65;
 }
 </style>
