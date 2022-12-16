@@ -1,51 +1,10 @@
 import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
 import type { TaskType } from "@/types";
+import { DateTime } from "luxon";
+import createId from "@/utility/createId";
 
-// export const useTaskStore = defineStore("tasks", {
-//   state: (): { tasks: TaskType[]; newTask: string; editTask: string } => ({
-//     tasks: exampleTask,
-//     newTask: "",
-//     editTask: "",
-//   }),
-//   getters: {
-//     getAllTasks(state) {
-//       return state.tasks;
-//     },
-//   },
-//   actions: {
-//     addTask() {
-//       if (!this.newTask) return;
-//       const task: TaskType = {
-//         id: Math.random().toString(),
-//         date: new Date(),
-//         task: this.newTask,
-//         completed: false,
-//       };
-//       this.tasks.unshift(task);
-//       this.newTask = "";
-//     },
-//     toggleComplete(id: string) {
-//       const index = this.tasks.findIndex((t) => t.id === id);
-//       this.tasks[index].completed = !this.tasks[index].completed;
-//     },
-//     deleteTask(id: string) {
-//       this.tasks = this.tasks.filter((t) => t.id !== id);
-//     },
-//     inputEditTask(e: Event) {
-//       const el = e.target as HTMLInputElement;
-//       this.editTask = el.value;
-//     },
-//     updateEdit(id: string) {
-//       if (this.editTask === "") return;
-//       else {
-//         const index = this.tasks.findIndex((t) => t.id === id);
-//         this.tasks[index].task = this.editTask;
-//         this.editTask = "";
-//       }
-//     },
-//   },
-// });
+const dt = DateTime;
 
 export const useTaskStore = defineStore("tasks", () => {
   // STATE
@@ -56,9 +15,9 @@ export const useTaskStore = defineStore("tasks", () => {
   function addTask() {
     if (!newTask.value) return;
     const task: TaskType = {
-      id: Math.random().toString(),
-      date: new Date(),
-      task: newTask.value,
+      id: createId(),
+      createdAt: dt.now().toISO(),
+      task: newTask.value.trim(),
       completed: false,
     };
 
@@ -83,6 +42,7 @@ export const useTaskStore = defineStore("tasks", () => {
   function updateEdit(id: string) {
     if (editTask.value === "") return;
     else {
+      console.log("updated task");
       const index = tasks.value.findIndex((t) => t.id === id);
       tasks.value[index].task = editTask.value;
       editTask.value = "";
@@ -91,8 +51,15 @@ export const useTaskStore = defineStore("tasks", () => {
 
   // GETTERS
   const getAllTasks = computed(() => tasks.value);
+  const getTodayTasks = computed(() =>
+    tasks.value.filter(
+      (t) =>
+        dt.fromISO(t.createdAt).day === dt.now().day &&
+        dt.fromISO(t.createdAt).weekNumber === dt.now().weekNumber
+    )
+  );
   const inCompleteTasks = computed(() =>
-    tasks.value.filter((t) => t.completed === false)
+    getTodayTasks.value.filter((t) => t.completed === false)
   );
 
   watch(
@@ -108,6 +75,7 @@ export const useTaskStore = defineStore("tasks", () => {
     newTask,
     editTask,
     getAllTasks,
+    getTodayTasks,
     inputEditTask,
     updateEdit,
     addTask,
