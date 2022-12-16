@@ -1,11 +1,10 @@
 @import "./base.css";
 
+body,
+html,
 #app {
-  /* max-width: 1280px;
-  margin: 0 auto; */
-  padding: 2rem;
-
-  font-weight: normal;
+  height: 100%;
+  width: 100%;
 }
 
 a,
@@ -13,6 +12,11 @@ a,
   text-decoration: none;
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
+}
+
+button {
+  background-color: transparent;
+  border: none;
 }
 
 @media (hover: hover) {
