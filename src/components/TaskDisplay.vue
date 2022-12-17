@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { useTaskStore } from "@/stores/task";
 import TaskItem from "@/components/TaskItem.vue";
 import type { ThemeType } from "./themes";
 import { ref, computed, inject } from "vue";
-const taskStore = useTaskStore();
+import type { TaskType } from "@/types";
 const showAllTask = ref<boolean>(true);
 const theme = inject<ThemeType>("theme");
 
-const filteredTasks = computed(() =>
-  showAllTask.value ? taskStore.getTodayTasks : taskStore.inCompleteTasks
+const props = withDefaults(defineProps<{ tasks: TaskType[] }>(), {});
+
+const tasks = computed(() =>
+  showAllTask.value
+    ? props.tasks
+    : props.tasks.filter((t) => t.completed === false)
 );
 </script>
 
@@ -32,7 +35,7 @@ const filteredTasks = computed(() =>
   <ul class="container">
     <li
       class="task"
-      v-for="(task, index) in filteredTasks"
+      v-for="(task, index) in tasks"
       :key="task.id"
       :style="[index % 2 === 0 ? { backgroundColor: theme?.inputBgColor } : {}]"
     >

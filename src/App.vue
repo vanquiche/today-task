@@ -29,6 +29,11 @@ function incrementDate() {
   selectedDate.value = selectedDate.value.plus({ days: 1 });
 }
 
+const todayTasks = computed(() =>
+  taskStore.tasks.filter(
+    (t) => dt.fromISO(t.createdAt).weekday === selectedDate.value.weekday
+  )
+);
 onMounted(() => {
   const storage = localStorage.getItem("todayTask");
   if (storage) {
@@ -51,7 +56,7 @@ onMounted(() => {
       :decrement-date="decrementDate"
     />
     <TaskForm />
-    <TaskDisplay />
+    <TaskDisplay :tasks="todayTasks" />
   </div>
 </template>
 
