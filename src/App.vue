@@ -13,27 +13,33 @@ import { useTaskStore } from "@/stores/task";
 // variables
 const taskStore = useTaskStore();
 const toggleTheme = ref(true);
-const theme = computed(() => (toggleTheme.value ? darkTheme : lightTheme));
-function handleToggleSwitch() {
-  toggleTheme.value = !toggleTheme.value;
-}
-provide<ComputedRef<ThemeType>>("theme", theme);
+
+// date variables
 const dt = DateTime;
 const selectedDate = ref(dt.now());
-const today = dt.now();
+const currentDate = dt.now();
 
-function decrementDate() {
-  selectedDate.value = selectedDate.value.minus({ days: 1 });
-}
-function incrementDate() {
-  selectedDate.value = selectedDate.value.plus({ days: 1 });
-}
-
-const todayTasks = computed(() =>
+// computed values
+const theme = computed(() => (toggleTheme.value ? darkTheme : lightTheme));
+const selectedTasks = computed(() =>
   taskStore.tasks.filter(
     (t) => dt.fromISO(t.createdAt).weekday === selectedDate.value.weekday
   )
 );
+
+// functions
+function handleToggleSwitch() {
+  toggleTheme.value = !toggleTheme.value;
+}
+function handleDateDecrement() {
+  selectedDate.value = selectedDate.value.minus({ days: 1 });
+}
+function handleDateIncrement() {
+  selectedDate.value = selectedDate.value.plus({ days: 1 });
+}
+
+provide<ComputedRef<ThemeType>>("theme", theme);
+
 onMounted(() => {
   const storage = localStorage.getItem("todayTask");
   if (storage) {
@@ -50,13 +56,13 @@ onMounted(() => {
   >
     <SwitchBtn :on-change="handleToggleSwitch" :state="toggleTheme" />
     <DateRange
-      :current-date="today"
+      :current-date="currentDate"
       :selected-date="selectedDate"
-      :increment-date="incrementDate"
-      :decrement-date="decrementDate"
+      :increment-date="handleDateIncrement"
+      :decrement-date="handleDateDecrement"
     />
     <TaskForm />
-    <TaskDisplay :tasks="todayTasks" />
+    <TaskDisplay :tasks="selectedTasks" />
   </div>
 </template>
 
