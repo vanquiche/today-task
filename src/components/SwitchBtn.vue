@@ -2,10 +2,10 @@
 import { inject } from "vue";
 import type { ThemeType } from "./themes";
 
-const props = defineProps({
-  state: Boolean,
-  onChange: Function,
-});
+const props = withDefaults(
+  defineProps<{ state: Boolean; onChange: Function }>(),
+  {}
+);
 const theme = inject<ThemeType>("theme");
 </script>
 
