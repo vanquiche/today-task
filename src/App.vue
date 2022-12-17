@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, provide, computed, type ComputedRef } from "vue";
+import { DateTime } from "luxon";
 // themes
 import { lightTheme, darkTheme, type ThemeType } from "./components/themes";
 // components
@@ -17,6 +18,16 @@ function handleToggleSwitch() {
   toggleTheme.value = !toggleTheme.value;
 }
 provide<ComputedRef<ThemeType>>("theme", theme);
+const dt = DateTime;
+const selectedDate = ref(dt.now());
+const today = dt.now();
+
+function decrementDate() {
+  selectedDate.value = selectedDate.value.minus({ days: 1 });
+}
+function incrementDate() {
+  selectedDate.value = selectedDate.value.plus({ days: 1 });
+}
 
 onMounted(() => {
   const storage = localStorage.getItem("todayTask");
@@ -33,7 +44,12 @@ onMounted(() => {
     :style="{ backgroundColor: theme.bgColor, color: theme.color }"
   >
     <SwitchBtn :on-change="handleToggleSwitch" :state="toggleTheme" />
-    <DateRange />
+    <DateRange
+      :current-date="today"
+      :selected-date="selectedDate"
+      :increment-date="incrementDate"
+      :decrement-date="decrementDate"
+    />
     <TaskForm />
     <TaskDisplay />
   </div>
