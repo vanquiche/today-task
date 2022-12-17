@@ -18,6 +18,8 @@ import {
   faSquareXmark,
   faSquarePen,
   faRotateLeft,
+  faCircleArrowLeft,
+  faCircleArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { faSquareCheck, faSquare } from "@fortawesome/free-regular-svg-icons";
@@ -31,7 +33,9 @@ library.add(
   faXmark,
   faSquareXmark,
   faSquarePen,
-  faRotateLeft
+  faRotateLeft,
+  faCircleArrowLeft,
+  faCircleArrowRight
 );
 
 // app.use(createPinia());
