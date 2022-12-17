@@ -1,12 +1,22 @@
 <script setup lang="ts">
-import { onMounted, ref, provide } from "vue";
+import { onMounted, ref, provide, computed, type ComputedRef } from "vue";
+// themes
+import { lightTheme, darkTheme, type ThemeType } from "./components/themes";
+// components
 import TaskDisplay from "@/components/TaskDisplay.vue";
+import SwitchBtn from "./components/SwitchBtn.vue";
 import TaskForm from "@/components/TaskForm.vue";
+import DateRange from "./components/DateRange.vue";
+// store
 import { useTaskStore } from "@/stores/task";
+// variables
 const taskStore = useTaskStore();
-const darkTheme = ref(true);
-
-provide("theme", darkTheme);
+const toggleTheme = ref(true);
+const theme = computed(() => (toggleTheme.value ? darkTheme : lightTheme));
+function handleToggleSwitch() {
+  toggleTheme.value = !toggleTheme.value;
+}
+provide<ComputedRef<ThemeType>>("theme", theme);
 
 onMounted(() => {
   const storage = localStorage.getItem("todayTask");
@@ -17,19 +27,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container" :class="[darkTheme ? 'blackGrid' : 'whiteGrid']">
-    <div class="switchContainer">
-      <input
-        type="checkbox"
-        id="theme"
-        name="theme"
-        class="switch"
-        :class="[darkTheme ? 'left' : 'right']"
-        v-model="darkTheme"
-      />
-    </div>
-    <h1>Today Task</h1>
-    <TaskForm :dark-theme="darkTheme" />
+  <div
+    class="container"
+    :class="[toggleTheme ? 'blackGrid' : 'whiteGrid']"
+    :style="{ backgroundColor: theme.bgColor, color: theme.color }"
+  >
+    <SwitchBtn :on-change="handleToggleSwitch" :state="toggleTheme" />
+    <DateRange />
+    <TaskForm />
     <TaskDisplay />
   </div>
 </template>
@@ -45,41 +50,15 @@ onMounted(() => {
   min-height: 100%;
   height: fit-content;
   transition: background-color 250ms ease-out;
-  outline: 1px solid red;
 }
 
-.switchContainer {
-  width: 35px;
-  outline: 1px solid red;
-  position: relative;
-  height: 20px;
-}
-
-.switch {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  transition: left 100ms ease-out;
-  height: 25px;
-  width: 25px;
-}
-
-.left {
-  left: 0;
-}
-
-.right {
-  left: 100%;
-}
 .whiteGrid {
   background-image: radial-gradient(
     circle at 1px 1px,
     rgba(0, 0, 0, 0.3) 1px,
     transparent 0
   );
-  background-color: white;
   background-size: 35px 35px;
-  color: black;
 }
 .blackGrid {
   background-image: radial-gradient(
@@ -87,8 +66,6 @@ onMounted(() => {
     rgba(255, 255, 255, 0.3) 1px,
     transparent 0
   );
-  background-color: black;
   background-size: 35px 35px;
-  color: white;
 }
 </style>

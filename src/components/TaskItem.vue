@@ -80,7 +80,7 @@ button {
   /* outline: 1px solid red; */
 }
 
-.taskContainer input {
+input {
   width: 100%;
   font-size: 0.8rem;
   font-family: inherit;
@@ -92,7 +92,11 @@ button {
   border-radius: 5px;
 }
 
-.taskContainer p {
+input:focus {
+  outline: 1px solid tomato;
+}
+
+p {
   word-wrap: break-word;
   font-weight: 500;
 }
@@ -101,10 +105,6 @@ button {
   background: none;
   outline: none;
   border: none;
-}
-
-input:focus {
-  outline: 1px solid tomato;
 }
 
 .strikethrough {

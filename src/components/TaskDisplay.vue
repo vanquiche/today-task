@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useTaskStore } from "@/stores/task";
 import TaskItem from "@/components/TaskItem.vue";
+import type { ThemeType } from "./themes";
 import { ref, computed, inject } from "vue";
 const taskStore = useTaskStore();
 const showAllTask = ref<boolean>(true);
-const darkTheme = inject("theme");
+const theme = inject<ThemeType>("theme");
 
 const filteredTasks = computed(() =>
   showAllTask.value ? taskStore.getTodayTasks : taskStore.inCompleteTasks
@@ -28,8 +29,13 @@ const filteredTasks = computed(() =>
     </label>
   </div>
 
-  <ul class="container" :class="[darkTheme ? 'taskDark' : 'taskLight']">
-    <li class="task" v-for="task in filteredTasks" :key="task.id">
+  <ul class="container">
+    <li
+      class="task"
+      v-for="(task, index) in filteredTasks"
+      :key="task.id"
+      :style="[index % 2 === 0 ? { backgroundColor: theme?.inputBgColor } : {}]"
+    >
       <TaskItem :task="task" />
     </li>
   </ul>
@@ -45,14 +51,6 @@ const filteredTasks = computed(() =>
   max-width: 800px;
 }
 
-.taskDark li:nth-child(odd) {
-  background-color: rgb(43, 43, 43);
-}
-
-.taskLight li:nth-child(odd) {
-  background-color: rgb(230, 230, 230);
-}
-
 .radioContainer {
   display: flex;
   gap: 20px;
@@ -66,7 +64,7 @@ const filteredTasks = computed(() =>
   /* justify-content: space-between; */
   list-style-type: none;
   /* outline: 1px solid black; */
-  padding: 10px 0;
+  padding: 10px;
   border-radius: 5px;
 }
 </style>

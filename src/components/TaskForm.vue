@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import { useTaskStore } from "@/stores/task";
+import type { ThemeType } from "./themes";
 const taskStore = useTaskStore();
 
-const darkTheme = inject("theme");
+const theme = inject<ThemeType>("theme");
 </script>
 
 <template>
@@ -11,7 +12,7 @@ const darkTheme = inject("theme");
   <form @submit.prevent="taskStore.addTask">
     <input
       type="text"
-      :class="[darkTheme ? 'inputDark' : 'inputLight']"
+      :style="{ backgroundColor: theme?.inputBgColor, color: theme?.color }"
       id="task"
       name="task"
       v-model="taskStore.newTask"
