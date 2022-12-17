@@ -65,7 +65,10 @@ export const useTaskStore = defineStore("tasks", () => {
   watch(
     tasks,
     (newTasks: TaskType[]) => {
-      localStorage.setItem("todayTask", JSON.stringify(newTasks));
+      const currentWeek = newTasks.filter(
+        (t) => dt.fromISO(t.createdAt).weekNumber === dt.now().weekNumber
+      );
+      localStorage.setItem("todayTask", JSON.stringify(currentWeek));
     },
     { deep: true }
   );
