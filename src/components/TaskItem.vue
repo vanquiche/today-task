@@ -4,7 +4,7 @@ import { nextTick, ref } from "vue";
 import type { TaskType } from "@/types";
 import { useTaskStore } from "@/stores/task";
 
-defineProps<{ task: TaskType }>();
+const props = withDefaults(defineProps<{ task: TaskType }>(), {});
 // store
 const taskStore = useTaskStore();
 // state
@@ -30,28 +30,34 @@ function handleEditSumbit(id: string) {
 </script>
 
 <template>
-  <button @click="() => taskStore.toggleComplete(task.id)" class="completeBtn">
+  <button
+    @click="() => taskStore.toggleComplete(props.task.id)"
+    class="completeBtn"
+  >
     <font-awesome-icon
-      v-if="task.completed"
+      v-if="props.task.completed"
       class="btn"
       icon="fa-regular fa-square-check"
     />
     <font-awesome-icon v-else class="btn" icon="fa-regular fa-square" />
   </button>
   <div class="taskContainer">
-    <form v-if="canEdit" @submit.prevent="() => handleEditSumbit(task.id)">
+    <form
+      v-if="canEdit"
+      @submit.prevent="() => handleEditSumbit(props.task.id)"
+    >
       <input
         ref="edit"
         type="text"
         @input="taskStore.inputEditTask"
-        :value="task.task"
+        :value="props.task.task"
         :disabled="!canEdit"
         :onblur="handleBlur"
         maxlength="85"
       />
     </form>
-    <p v-else :class="[task.completed ? 'strikethrough' : undefined]">
-      {{ task.task }}
+    <p v-else :class="[props.task.completed ? 'strikethrough' : undefined]">
+      {{ props.task.task }}
     </p>
   </div>
   <button v-if="!canEdit" @click="handleEditClick" class="controlBtn">

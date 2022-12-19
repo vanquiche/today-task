@@ -2,9 +2,15 @@
 import TaskItem from "@/components/TaskItem.vue";
 import type { ThemeType } from "./themes";
 import { ref, computed, inject } from "vue";
+import { useTaskStore } from "@/stores/task";
+import { DateTime } from "luxon";
 import type { TaskType } from "@/types";
+import OldTaskItem from "./OldTaskItem.vue";
 const showAllTask = ref<boolean>(true);
 const theme = inject<ThemeType>("theme");
+const taskStore = useTaskStore();
+const dt = DateTime;
+const today = dt.now().weekday;
 
 const props = withDefaults(defineProps<{ tasks: TaskType[] }>(), {});
 
@@ -39,7 +45,15 @@ const tasks = computed(() =>
       :key="task.id"
       :style="[index % 2 === 0 ? { backgroundColor: theme?.inputBgColor } : {}]"
     >
-      <TaskItem :task="task" />
+      <TaskItem
+        :task="task"
+        v-if="dt.fromISO(task.createdAt).weekday === today"
+      />
+      <OldTaskItem
+        :task-item="task"
+        :handle-click="() => taskStore.moveTask(task)"
+        v-else
+      />
     </li>
   </ul>
 </template>
