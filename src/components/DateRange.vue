@@ -1,37 +1,56 @@
 <script setup lang="ts">
-import type { DateTime } from "luxon";
-import { computed } from "vue";
+import type { DateTime as DateTimeType } from "luxon";
+import { DateTime } from "luxon";
+import type { ThemeType } from "./themes";
+import { computed, inject } from "vue";
+import { useTaskStore } from "@/stores/task";
+const taskStore = useTaskStore();
+const dt = DateTime;
+
 const props = withDefaults(
   defineProps<{
-    currentDate: DateTime;
-    selectedDate: DateTime;
+    currentDate: DateTimeType;
+    selectedDate: DateTimeType["weekday"];
     decrementDate: Function;
     incrementDate: Function;
   }>(),
   {}
 );
 
-const displayDate = computed(() => props.selectedDate.toFormat("LLL dd yyyy"));
+const disableBackBtn = computed(() =>
+  taskStore.daysWithTasks.length === 0 ||
+  props.selectedDate === taskStore.daysWithTasks[0]
+    ? true
+    : false
+);
+
+const disableForwardBtn = computed(() =>
+  props.selectedDate === props.currentDate.weekday ? true : false
+);
+
+const theme = inject<ThemeType>("theme");
+
+const displayDate = computed(() => {
+  const now = dt.local();
+  const date = now.startOf("week").plus({ days: props.selectedDate - 1 });
+  return date.toLocaleString(dt.DATE_MED_WITH_WEEKDAY);
+});
 </script>
 
 <template>
   <div class="wrapper">
     <button
       @click="props.decrementDate"
-      :disabled="
-        props.selectedDate.weekNumber !== props.currentDate.weekNumber
-          ? true
-          : false
-      "
+      :disabled="disableBackBtn"
+      :style="{ color: theme?.accentColor }"
     >
       <font-awesome-icon icon="fa-solid fa-circle-arrow-left" size="xl" />
     </button>
     <p>{{ displayDate }}</p>
     <button
       @click="props.incrementDate"
-      :disabled="
-        props.selectedDate.weekday === props.currentDate.weekday ? true : false
-      "
+      :disabled="disableForwardBtn"
+      :style="{ color: theme?.accentColor }"
     >
       <font-awesome-icon icon="fa-solid fa-circle-arrow-right" size="xl" />
     </button>
@@ -47,6 +66,9 @@ const displayDate = computed(() => props.selectedDate.toFormat("LLL dd yyyy"));
 button {
   color: inherit;
   cursor: pointer;
+}
+button:focus {
+  outline: 2px solid red;
 }
 
 button:disabled {

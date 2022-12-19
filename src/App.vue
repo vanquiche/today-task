@@ -16,14 +16,16 @@ const toggleTheme = ref(true);
 
 // date variables
 const dt = DateTime;
-const selectedDate = ref(dt.now());
+const selectedDate = ref(dt.now().weekday);
 const currentDate = dt.now();
+const dateCounter = ref(0);
 
 // computed values
 const theme = computed(() => (toggleTheme.value ? darkTheme : lightTheme));
+
 const selectedTasks = computed(() =>
   taskStore.tasks.filter(
-    (t) => dt.fromISO(t.createdAt).weekday === selectedDate.value.weekday
+    (t) => dt.fromISO(t.createdAt).weekday === selectedDate.value
   )
 );
 
@@ -32,10 +34,15 @@ function handleToggleSwitch() {
   toggleTheme.value = !toggleTheme.value;
 }
 function handleDateDecrement() {
-  selectedDate.value = selectedDate.value.minus({ days: 1 });
+  if (taskStore.daysWithTasks.length === 0) return;
+  dateCounter.value++;
+  selectedDate.value = taskStore.daysWithTasks[dateCounter.value];
 }
+
 function handleDateIncrement() {
-  selectedDate.value = selectedDate.value.plus({ days: 1 });
+  if (taskStore.daysWithTasks.length === 0) return;
+  dateCounter.value--;
+  selectedDate.value = taskStore.daysWithTasks[dateCounter.value];
 }
 
 provide<ComputedRef<ThemeType>>("theme", theme);
@@ -51,7 +58,7 @@ onMounted(() => {
 <template>
   <div
     class="container"
-    :class="[toggleTheme ? 'blackGrid' : 'whiteGrid']"
+    :class="[toggleTheme ? 'blackDotPattern' : 'whiteDotPattern']"
     :style="{ backgroundColor: theme.bgColor, color: theme.color }"
   >
     <SwitchBtn :on-change="handleToggleSwitch" :state="toggleTheme" />
@@ -61,7 +68,7 @@ onMounted(() => {
       :increment-date="handleDateIncrement"
       :decrement-date="handleDateDecrement"
     />
-    <TaskForm />
+    <TaskForm :selected-date="selectedDate" :current-date="currentDate" />
     <TaskDisplay :tasks="selectedTasks" />
   </div>
 </template>
@@ -79,7 +86,7 @@ onMounted(() => {
   transition: background-color 250ms ease-out;
 }
 
-.whiteGrid {
+.whiteDotPattern {
   background-image: radial-gradient(
     circle at 1px 1px,
     rgba(0, 0, 0, 0.3) 1px,
@@ -87,7 +94,7 @@ onMounted(() => {
   );
   background-size: 35px 35px;
 }
-.blackGrid {
+.blackDotPattern {
   background-image: radial-gradient(
     circle at 1px 1px,
     rgba(255, 255, 255, 0.3) 1px,

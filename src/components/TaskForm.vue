@@ -1,10 +1,18 @@
 <script setup lang="ts">
-import { inject } from "vue";
+import { inject, computed } from "vue";
 import { useTaskStore } from "@/stores/task";
 import type { ThemeType } from "./themes";
+import type { DateTime } from "luxon";
 const taskStore = useTaskStore();
 
 const theme = inject<ThemeType>("theme");
+const props = withDefaults(
+  defineProps<{ selectedDate: DateTime["weekday"]; currentDate: DateTime }>(),
+  {}
+);
+const disableInput = computed(() =>
+  props.selectedDate !== props.currentDate.weekday ? true : false
+);
 </script>
 
 <template>
@@ -12,18 +20,20 @@ const theme = inject<ThemeType>("theme");
   <form @submit.prevent="taskStore.addTask">
     <input
       type="text"
-      :style="{ backgroundColor: theme?.inputBgColor, color: theme?.color }"
+      :style="{
+        backgroundColor: theme?.inputBgColor,
+        color: theme?.color,
+      }"
       id="task"
       name="task"
       v-model="taskStore.newTask"
-      placeholder="let's do something today..."
+      :placeholder="disableInput ? '...' : 'do something today'"
       autocomplete="off"
       maxlength="85"
+      :disabled="disableInput"
       required
     />
-    <button :disabled="taskStore.newTask.length > 0 ? false : true">
-      Add Task
-    </button>
+    <button :disabled="disableInput">Add Task</button>
   </form>
 </template>
 
@@ -43,6 +53,7 @@ button {
   cursor: pointer;
   background-color: rgb(110, 112, 212);
   color: white;
+  transition: background-color 150ms ease-out;
 }
 
 button:disabled {
@@ -57,18 +68,8 @@ input {
   padding: 8px 10px;
   border-radius: 5px;
   border: none;
-  text-align: center;
+  /* text-align: center; */
   outline: none;
-}
-
-.inputDark {
-  background-color: rgb(51, 51, 51);
-  color: white;
-}
-
-.inputLight {
-  background-color: rgb(216, 216, 216);
-  color: black;
 }
 
 input:focus {

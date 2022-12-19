@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
 import type { TaskType } from "@/types";
 import { DateTime } from "luxon";
+
 import createId from "@/utility/createId";
 
 const dt = DateTime;
@@ -42,7 +43,6 @@ export const useTaskStore = defineStore("tasks", () => {
   function updateEdit(id: string) {
     if (editTask.value === "") return;
     else {
-      console.log("updated task");
       const index = tasks.value.findIndex((t) => t.id === id);
       tasks.value[index].task = editTask.value;
       editTask.value = "";
@@ -50,7 +50,6 @@ export const useTaskStore = defineStore("tasks", () => {
   }
 
   // GETTERS
-  const getAllTasks = computed(() => tasks.value);
   const getTodayTasks = computed(() =>
     tasks.value.filter(
       (t) =>
@@ -58,9 +57,15 @@ export const useTaskStore = defineStore("tasks", () => {
         dt.fromISO(t.createdAt).weekNumber === dt.now().weekNumber
     )
   );
-  const inCompleteTasks = computed(() =>
-    getTodayTasks.value.filter((t) => t.completed === false)
-  );
+
+  const daysWithTasks = computed<DateTime["weekday"][]>(() => {
+    const days = new Set<DateTime["weekday"]>();
+    tasks.value.forEach((t) => {
+      const day = dt.fromISO(t.createdAt).weekday;
+      days.add(day);
+    });
+    return Array.from(days);
+  });
 
   watch(
     tasks,
@@ -77,13 +82,12 @@ export const useTaskStore = defineStore("tasks", () => {
     tasks,
     newTask,
     editTask,
-    getAllTasks,
     getTodayTasks,
+    daysWithTasks,
     inputEditTask,
     updateEdit,
     addTask,
     deleteTask,
     toggleComplete,
-    inCompleteTasks,
   };
 });
