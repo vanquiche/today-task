@@ -3,7 +3,7 @@ import { inject } from "vue";
 import type { ThemeType } from "./themes";
 
 const props = withDefaults(
-  defineProps<{ state: Boolean; onChange: Function }>(),
+  defineProps<{ state: Boolean; onChange: () => void }>(),
   {}
 );
 const theme = inject<ThemeType>("theme");
