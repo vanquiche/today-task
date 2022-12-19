@@ -26,6 +26,23 @@ export const useTaskStore = defineStore("tasks", () => {
     newTask.value = "";
   }
 
+  function moveTask(copyTask: TaskType) {
+    console.log("moving...");
+
+    // copy task, update date
+    const copiedTask: TaskType = {
+      ...copyTask,
+      createdAt: dt.now().toISO(),
+      completed: false,
+    };
+
+    // move copied task to beginning of list
+    tasks.value = [
+      copiedTask,
+      ...tasks.value.filter((t) => t.id !== copyTask.id),
+    ];
+  }
+
   function toggleComplete(id: string) {
     const index = tasks.value.findIndex((t) => t.id === id);
     tasks.value[index].completed = !tasks.value[index].completed;
@@ -86,6 +103,7 @@ export const useTaskStore = defineStore("tasks", () => {
     daysWithTasks,
     inputEditTask,
     updateEdit,
+    moveTask,
     addTask,
     deleteTask,
     toggleComplete,
