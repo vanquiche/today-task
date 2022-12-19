@@ -6,13 +6,13 @@ import { computed, inject } from "vue";
 import { useTaskStore } from "@/stores/task";
 const taskStore = useTaskStore();
 const dt = DateTime;
+const today = dt.now().weekday;
 
 const props = withDefaults(
   defineProps<{
-    currentDate: DateTimeType;
     selectedDate: DateTimeType["weekday"];
-    decrementDate: Function;
-    incrementDate: Function;
+    decrementDate: () => void;
+    incrementDate: () => void;
   }>(),
   {}
 );
@@ -25,7 +25,7 @@ const disableBackBtn = computed(() =>
 );
 
 const disableForwardBtn = computed(() =>
-  props.selectedDate === props.currentDate.weekday ? true : false
+  props.selectedDate === today ? true : false
 );
 
 const theme = inject<ThemeType>("theme");
@@ -71,10 +71,6 @@ button:focus {
   outline: 2px solid red;
 }
 
-button:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
 p {
   font-size: 1.2rem;
 }
