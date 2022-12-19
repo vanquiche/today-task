@@ -2,16 +2,18 @@
 import { inject, computed } from "vue";
 import { useTaskStore } from "@/stores/task";
 import type { ThemeType } from "./themes";
-import type { DateTime } from "luxon";
+import type { DateTime as DateTimeType } from "luxon";
+import { DateTime } from "luxon";
+const dt = DateTime;
 const taskStore = useTaskStore();
-
+const today = dt.now().weekday;
 const theme = inject<ThemeType>("theme");
 const props = withDefaults(
-  defineProps<{ selectedDate: DateTime["weekday"]; currentDate: DateTime }>(),
+  defineProps<{ selectedDate: DateTimeType["weekday"] }>(),
   {}
 );
 const disableInput = computed(() =>
-  props.selectedDate !== props.currentDate.weekday ? true : false
+  props.selectedDate !== today ? true : false
 );
 </script>
 
@@ -33,7 +35,7 @@ const disableInput = computed(() =>
       :disabled="disableInput"
       required
     />
-    <button :disabled="disableInput">Add Task</button>
+    <button :disabled="taskStore.newTask ? false : true">Add Task</button>
   </form>
 </template>
 
@@ -51,15 +53,12 @@ button {
   padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
-  background-color: rgb(110, 112, 212);
   color: white;
-  transition: background-color 150ms ease-out;
+  background-color: rgb(110, 112, 212);
 }
 
 button:disabled {
-  cursor: default;
-  background-color: rgb(151, 151, 151);
-  color: rgb(182, 182, 182);
+  color: rgb(172, 172, 172);
 }
 
 input {
@@ -73,7 +72,7 @@ input {
 }
 
 input:focus {
-  outline: 2px solid tomato;
+  outline: 2px solid rgb(110, 112, 212);
 }
 label {
   display: block;
