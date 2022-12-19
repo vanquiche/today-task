@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import { lightTheme, darkTheme, type ThemeType } from "./components/themes";
 // components
 import TaskDisplay from "@/components/TaskDisplay.vue";
-import SwitchBtn from "./components/SwitchBtn.vue";
+import HeaderBar from "./components/HeaderBar.vue";
 import TaskForm from "@/components/TaskForm.vue";
 import DateRange from "./components/DateRange.vue";
 // store
@@ -17,8 +17,7 @@ const toggleTheme = ref(true);
 // date variables
 const dt = DateTime;
 const selectedDate = ref(dt.now().weekday);
-const currentDate = dt.now();
-const dateCounter = ref(0);
+const selectedDateIndex = ref(0);
 
 // computed values
 const theme = computed(() => (toggleTheme.value ? darkTheme : lightTheme));
@@ -35,14 +34,14 @@ function handleToggleSwitch() {
 }
 function handleDateDecrement() {
   if (taskStore.daysWithTasks.length === 0) return;
-  dateCounter.value++;
-  selectedDate.value = taskStore.daysWithTasks[dateCounter.value];
+  selectedDateIndex.value++;
+  selectedDate.value = taskStore.daysWithTasks[selectedDateIndex.value];
 }
 
 function handleDateIncrement() {
   if (taskStore.daysWithTasks.length === 0) return;
-  dateCounter.value--;
-  selectedDate.value = taskStore.daysWithTasks[dateCounter.value];
+  selectedDateIndex.value--;
+  selectedDate.value = taskStore.daysWithTasks[selectedDateIndex.value];
 }
 
 provide<ComputedRef<ThemeType>>("theme", theme);
@@ -56,26 +55,26 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
+  <section
     class="container"
     :class="[toggleTheme ? 'blackDotPattern' : 'whiteDotPattern']"
     :style="{ backgroundColor: theme.bgColor, color: theme.color }"
   >
-    <SwitchBtn :on-change="handleToggleSwitch" :state="toggleTheme" />
+    <HeaderBar :on-toggle="handleToggleSwitch" :toggle-state="toggleTheme" />
     <DateRange
-      :current-date="currentDate"
       :selected-date="selectedDate"
       :increment-date="handleDateIncrement"
       :decrement-date="handleDateDecrement"
     />
-    <TaskForm :selected-date="selectedDate" :current-date="currentDate" />
+    <TaskForm :selected-date="selectedDate" />
     <TaskDisplay :tasks="selectedTasks" />
-  </div>
+  </section>
 </template>
 
 <style scoped>
 .container {
-  padding: 2rem 0;
+  padding: 0;
+  padding-bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
