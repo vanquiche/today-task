@@ -3,7 +3,7 @@ export const lightTheme: ThemeType = {
   color: "black",
   inputBgColor: "rgb(220, 230, 230)",
   disabledInputColor: "rgb(240, 240, 240)",
-  switchBgColor: "black",
+  switchBgColor: "rgb(43, 43, 43)",
   accentColor: "rgb(110, 112, 212)",
 };
 
@@ -12,7 +12,7 @@ export const darkTheme: ThemeType = {
   color: "white",
   inputBgColor: "rgb(43, 43, 43)",
   disabledInputColor: "rgb(20, 20, 20)",
-  switchBgColor: "white",
+  switchBgColor: "rgb(240, 240, 240)",
   accentColor: "rgb(110, 112, 212)",
 };
 
