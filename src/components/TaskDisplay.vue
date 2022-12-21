@@ -38,7 +38,7 @@ const tasks = computed(() =>
     </label>
   </div>
 
-  <ul class="container">
+  <TransitionGroup name="task" tag="ul" class="container">
     <li
       class="task"
       v-for="(task, index) in tasks"
@@ -55,7 +55,7 @@ const tasks = computed(() =>
         v-else
       />
     </li>
-  </ul>
+  </TransitionGroup>
 </template>
 
 <style scoped>
@@ -83,5 +83,20 @@ const tasks = computed(() =>
   /* outline: 1px solid black; */
   padding: 10px;
   border-radius: 5px;
+}
+
+/* transition classes */
+.task-move,
+.task-enter-active,
+.task-leave-active {
+  transition: all 0.5s ease;
+}
+.task-enter-from,
+.task-leave-to {
+  opacity: 0;
+  /* transform: translateX(30px); */
+}
+.task-leave-active {
+  position: absolute;
 }
 </style>
