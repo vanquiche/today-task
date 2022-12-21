@@ -75,12 +75,15 @@ export const useTaskStore = defineStore("tasks", () => {
     )
   );
 
-  const daysWithTasks = computed<DateTime["weekday"][]>(() => {
+  const daysWithTasks = computed(() => {
     const days = new Set<DateTime["weekday"]>();
+    days.add(dt.now().weekday);
     tasks.value.forEach((t) => {
       const day = dt.fromISO(t.createdAt).weekday;
       days.add(day);
     });
+    // order date from newest to oldes
+    // i.e. [5, 3, 2]
     return Array.from(days);
   });
 
