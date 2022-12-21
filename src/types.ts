@@ -4,3 +4,9 @@ export interface TaskType {
   task: string;
   completed: boolean;
 }
+
+export interface ModalProviderType {
+  state: boolean;
+  open: () => void;
+  close: () => void;
+}
