@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref, provide, computed, type ComputedRef } from "vue";
+import { onMounted, ref, provide, computed, reactive } from "vue";
 import { DateTime } from "luxon";
 // themes
-import { lightTheme, darkTheme, type ThemeType } from "./components/themes";
+import { lightTheme, darkTheme } from "./components/themes";
 // components
 import TaskDisplay from "@/components/TaskDisplay.vue";
 import HeaderBar from "./components/HeaderBar.vue";
@@ -10,41 +10,61 @@ import TaskForm from "@/components/TaskForm.vue";
 import DateRange from "./components/DateRange.vue";
 // store
 import { useTaskStore } from "@/stores/task";
-// variables
+import ModalDialog from "./components/ModalDialog.vue";
+// store
 const taskStore = useTaskStore();
-const toggleTheme = ref(true);
 
-// date variables
+// date handler
 const dt = DateTime;
-const selectedDate = ref(dt.now().weekday);
-const selectedDateIndex = ref(0);
+const dateRange = reactive({
+  dates: computed(() => taskStore.daysWithTasks) as any,
+  index: 0,
+  selected: function () {
+    return this.dates[this.index];
+  },
+  nextDate: function () {
+    if (this.index >= this.dates.length - 1) return;
+    this.index++;
+  },
+  prevDate: function () {
+    if (this.index <= 0) return;
+    this.index--;
+  },
+});
 
-// computed values
-const theme = computed(() => (toggleTheme.value ? darkTheme : lightTheme));
-
-const selectedTasks = computed(() =>
-  taskStore.tasks.filter(
-    (t) => dt.fromISO(t.createdAt).weekday === selectedDate.value
-  )
-);
-
-// functions
-function handleToggleSwitch() {
-  toggleTheme.value = !toggleTheme.value;
-}
 function handleDateDecrement() {
-  if (taskStore.daysWithTasks.length === 0) return;
-  selectedDateIndex.value++;
-  selectedDate.value = taskStore.daysWithTasks[selectedDateIndex.value];
+  dateRange.nextDate();
 }
 
 function handleDateIncrement() {
-  if (taskStore.daysWithTasks.length === 0) return;
-  selectedDateIndex.value--;
-  selectedDate.value = taskStore.daysWithTasks[selectedDateIndex.value];
+  dateRange.prevDate();
 }
 
-provide<ComputedRef<ThemeType>>("theme", theme);
+// computed values
+const toggleTheme = ref(true);
+const theme = computed(() => (toggleTheme.value ? darkTheme : lightTheme));
+function handleToggleSwitch() {
+  toggleTheme.value = !toggleTheme.value;
+}
+
+const selectedTasks = computed(() =>
+  taskStore.tasks.filter(
+    (t) => dt.fromISO(t.createdAt).weekday === dateRange.selected()
+  )
+);
+
+const modal = reactive({
+  state: false,
+  close: function () {
+    this.state = false;
+  },
+  open: function () {
+    this.state = true;
+  },
+});
+
+provide("modal", modal);
+provide("theme", theme);
 
 onMounted(() => {
   const storage = localStorage.getItem("todayTask");
@@ -55,6 +75,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <ModalDialog />
   <section
     class="container"
     :class="[toggleTheme ? 'blackDotPattern' : 'whiteDotPattern']"
@@ -62,11 +83,11 @@ onMounted(() => {
   >
     <HeaderBar :on-toggle="handleToggleSwitch" :toggle-state="toggleTheme" />
     <DateRange
-      :selected-date="selectedDate"
+      :selected-date="dateRange.selected()"
       :increment-date="handleDateIncrement"
       :decrement-date="handleDateDecrement"
     />
-    <TaskForm :selected-date="selectedDate" />
+    <TaskForm :selected-date="dateRange.selected()" />
     <TaskDisplay :tasks="selectedTasks" />
   </section>
 </template>

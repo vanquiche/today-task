@@ -19,7 +19,8 @@ const props = withDefaults(
 
 const disableBackBtn = computed(() =>
   taskStore.daysWithTasks.length === 0 ||
-  props.selectedDate === taskStore.daysWithTasks[0]
+  props.selectedDate ===
+    taskStore.daysWithTasks[taskStore.daysWithTasks.length - 1]
     ? true
     : false
 );
@@ -41,16 +42,16 @@ const displayDate = computed(() => {
   <div class="wrapper">
     <button
       @click="props.decrementDate"
-      :disabled="disableBackBtn"
       :style="{ color: theme?.accentColor }"
+      :disabled="disableBackBtn"
     >
       <font-awesome-icon icon="fa-solid fa-circle-arrow-left" size="xl" />
     </button>
     <p>{{ displayDate }}</p>
     <button
       @click="props.incrementDate"
-      :disabled="disableForwardBtn"
       :style="{ color: theme?.accentColor }"
+      :disabled="disableForwardBtn"
     >
       <font-awesome-icon icon="fa-solid fa-circle-arrow-right" size="xl" />
     </button>
