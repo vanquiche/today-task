@@ -62,7 +62,6 @@ const tasks = computed(() =>
 .container {
   display: flex;
   flex-direction: column;
-  /* outline: 1px solid red; */
   padding: 0 20px;
   width: 100%;
   max-width: 800px;
@@ -71,16 +70,13 @@ const tasks = computed(() =>
 .radioContainer {
   display: flex;
   gap: 20px;
-  /* outline: 1px solid red; */
   width: fit-content;
 }
 
 .task {
   width: 100%;
   display: flex;
-  /* justify-content: space-between; */
   list-style-type: none;
-  /* outline: 1px solid black; */
   padding: 10px;
   border-radius: 5px;
 }
@@ -89,12 +85,13 @@ const tasks = computed(() =>
 .task-move,
 .task-enter-active,
 .task-leave-active {
-  transition: all 0.5s ease;
+  transition: transform 200ms ease;
 }
-.task-enter-from,
+.task-enter-from {
+  transform: translateX(100%);
+}
 .task-leave-to {
   opacity: 0;
-  /* transform: translateX(30px); */
 }
 .task-leave-active {
   position: absolute;
