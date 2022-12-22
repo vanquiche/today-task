@@ -68,11 +68,10 @@ button {
   color: inherit;
   cursor: pointer;
 }
-button:focus {
-  outline: 2px solid red;
-}
 
 p {
   font-size: 1.2rem;
+  width: 230px;
+  text-align: center;
 }
 </style>
