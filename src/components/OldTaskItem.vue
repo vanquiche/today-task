@@ -15,7 +15,7 @@ const props = withDefaults(
       {{ props.taskItem.task }}
     </p>
     <button @click="props.handleClick">
-      <font-awesome-icon icon="fa-solid fa-copy" />
+      <font-awesome-icon icon="fa-solid fa-angles-right" />
     </button>
   </div>
 </template>
