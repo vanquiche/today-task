@@ -48,9 +48,9 @@ function handleToggleSwitch() {
 }
 
 const selectedTasks = computed(() =>
-  taskStore.tasks.filter(
-    (t) => dt.fromISO(t.createdAt).weekday === dateRange.selected()
-  )
+  taskStore.tasks
+    .filter((t) => dt.fromISO(t.createdAt).weekday === dateRange.selected())
+    .sort((a, b) => b.position - a.position)
 );
 
 const modal = reactive({

@@ -3,6 +3,7 @@ export interface TaskType {
   createdAt: string;
   task: string;
   completed: boolean;
+  position: number;
 }
 
 export interface ModalProviderType {

@@ -66,7 +66,7 @@ function handleEditSumbit(id: string) {
   <button v-else type="reset" @click="handleBlur" class="controlBtn">
     <font-awesome-icon class="btn" icon="fa-solid fa-rotate-left" />
   </button>
-  <button @click="() => taskStore.deleteTask(task.id)" class="controlBtn">
+  <button @click="() => taskStore.deleteTask(task)" class="controlBtn">
     <font-awesome-icon class="btn" icon="fa-solid fa-xmark" size="lg" />
   </button>
 </template>

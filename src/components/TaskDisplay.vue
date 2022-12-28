@@ -6,19 +6,45 @@ import { useTaskStore } from "@/stores/task";
 import { DateTime } from "luxon";
 import type { TaskType } from "@/types";
 import OldTaskItem from "./OldTaskItem.vue";
+
+const props = withDefaults(defineProps<{ tasks: TaskType[] }>(), {});
+
 const showAllTask = ref<boolean>(true);
 const theme = inject<ThemeType>("theme");
 const taskStore = useTaskStore();
 const dt = DateTime;
 const today = dt.now().weekday;
 
-const props = withDefaults(defineProps<{ tasks: TaskType[] }>(), {});
+const dragTaskSelected = ref<TaskType | null>(null);
+const dragTaskHover = ref<TaskType | null>(null);
+const isDragging = ref(false);
 
 const tasks = computed(() =>
   showAllTask.value
     ? props.tasks
     : props.tasks.filter((t) => t.completed === false)
 );
+
+function handleDragstart(task: TaskType) {
+  isDragging.value = true;
+  dragTaskSelected.value = task;
+}
+
+function handleDragover(task: TaskType) {
+  dragTaskHover.value = task;
+}
+
+function handleDragend() {
+  if (dragTaskSelected.value && dragTaskHover.value && isDragging.value) {
+    // return if position has not changed
+    if (dragTaskSelected.value.position === dragTaskHover.value.position)
+      return;
+    taskStore.updatePosition(dragTaskSelected.value, dragTaskHover.value);
+    // clear selection and style
+  }
+  dragTaskHover.value = null;
+  isDragging.value = false;
+}
 </script>
 
 <template>
@@ -43,7 +69,18 @@ const tasks = computed(() =>
       class="task"
       v-for="(task, index) in tasks"
       :key="task.id"
-      :style="[index % 2 === 0 ? { backgroundColor: theme?.inputBgColor } : {}]"
+      :style="{
+        backgroundColor: index % 2 === 0 ? theme?.inputBgColor : '',
+        outline:
+          dragTaskHover && dragTaskHover.id === task.id
+            ? `2px solid ${theme?.accentColor}`
+            : '2px solid transparent',
+      }"
+      :draggable="dt.fromISO(task.createdAt).weekday === today"
+      @dragstart="() => handleDragstart(task)"
+      @dragover="() => handleDragover(task)"
+      @dragend="handleDragend"
+      :data-task="task.id"
     >
       <TaskItem
         :task="task"
@@ -79,6 +116,8 @@ const tasks = computed(() =>
   list-style-type: none;
   padding: 10px;
   border-radius: 5px;
+  margin: 5px 0;
+  transition: outline 200ms ease;
 }
 
 /* transition classes */
