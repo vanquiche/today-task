@@ -15,12 +15,13 @@ export const useTaskStore = defineStore("tasks", () => {
 
   function addTask() {
     if (!newTask.value) return;
+    const lastPosition = Math.max(...tasks.value.map((t) => t.position));
     const task: TaskType = {
       id: createId(),
       completed: false,
       task: newTask.value.trim(),
       createdAt: dt.now().toISO(),
-      position: tasks.value.length,
+      position: lastPosition + 1,
     };
 
     tasks.value.push(task);
@@ -52,7 +53,7 @@ export const useTaskStore = defineStore("tasks", () => {
 
   function deleteTask(task: TaskType) {
     // filter out task
-    // then trim positions of tasks
+    // then trim positions of tasks with positions lower than deleted task
     tasks.value = tasks.value
       .filter((t) => t.id !== task.id)
       .map((t) => {
