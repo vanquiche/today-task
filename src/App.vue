@@ -20,7 +20,7 @@ const dateRange = reactive({
   dates: computed(() => taskStore.daysWithTasks) as any,
   index: 0,
   selected: function () {
-    return this.dates[this.index];
+    return this.dates[this.index] || dt.now().weekday;
   },
   nextDate: function () {
     if (this.index >= this.dates.length - 1) return;

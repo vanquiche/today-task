@@ -28,12 +28,14 @@ export const useTaskStore = defineStore("tasks", () => {
   }
 
   function moveTask(copyTask: TaskType) {
-    // copy task, update date
+    // get the larget position in list
+    const lastPosition = Math.max(...tasks.value.map((t) => t.position));
+    // copy task, with first position and incomplete state
     const copiedTask: TaskType = {
       ...copyTask,
       completed: false,
+      position: lastPosition + 1,
       createdAt: dt.now().toISO(),
-      position: tasks.value.length,
     };
 
     // move copied task to beginning of list
@@ -111,7 +113,7 @@ export const useTaskStore = defineStore("tasks", () => {
       days.add(day);
     });
     // order date from newest to oldest i.e. [5, 3, 2]
-    return Array.from(days);
+    return Array.from(days).sort((a, b) => b - a);
   });
 
   watch(
