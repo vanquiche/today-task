@@ -14,7 +14,7 @@ const props = withDefaults(
     <p :class="[props.taskItem.completed ? 'strikethrough' : undefined]">
       {{ props.taskItem.task }}
     </p>
-    <button @click="props.handleClick">
+    <button @click="props.handleClick" aria-label="move task to current day">
       <font-awesome-icon icon="fa-solid fa-angles-right" />
     </button>
   </div>

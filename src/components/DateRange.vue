@@ -34,28 +34,30 @@ const theme = inject<ThemeType>("theme");
 const displayDate = computed(() => {
   const now = dt.local();
   const date = now.startOf("week").plus({ days: props.selectedDate - 1 });
-  return date.toLocaleString(dt.DATE_MED_WITH_WEEKDAY);
+  return date.toLocaleString({ month: "short", day: "numeric" });
 });
 </script>
 
 <template>
-  <div class="wrapper">
+  <section id="date-range" class="wrapper">
     <button
       @click="props.decrementDate"
       :style="{ color: theme?.accentColor }"
       :disabled="disableBackBtn"
+      aria-label="navigate to previous date"
     >
       <font-awesome-icon icon="fa-solid fa-circle-arrow-left" size="xl" />
     </button>
-    <p>{{ displayDate }}</p>
+    <h1 class="date" aria-label="Selected Date">{{ displayDate }}</h1>
     <button
       @click="props.incrementDate"
       :style="{ color: theme?.accentColor }"
       :disabled="disableForwardBtn"
+      aria-label="navigate to next date"
     >
       <font-awesome-icon icon="fa-solid fa-circle-arrow-right" size="xl" />
     </button>
-  </div>
+  </section>
 </template>
 
 <style scoped>
@@ -69,9 +71,9 @@ button {
   cursor: pointer;
 }
 
-p {
+.date {
   font-size: 1.2rem;
-  width: 230px;
+  width: 135px;
   text-align: center;
 }
 </style>

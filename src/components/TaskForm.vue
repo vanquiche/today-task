@@ -18,24 +18,33 @@ const disableInput = computed(() =>
 </script>
 
 <template>
-  <!-- <p>{{ darkTheme }}</p> -->
-  <form @submit.prevent="taskStore.addTask">
+  <form
+    id="task-form"
+    @submit.prevent="taskStore.addTask"
+    aria-label="Add new task"
+  >
     <input
       type="text"
+      id="newTaskInput"
       :style="{
         backgroundColor: theme?.inputBgColor,
         color: theme?.color,
       }"
-      id="task"
-      name="task"
       v-model="taskStore.newTask"
       :placeholder="disableInput ? '...' : 'do something today'"
       autocomplete="off"
       maxlength="85"
       :disabled="disableInput"
+      aria-label="Add new task"
       required
     />
-    <button :disabled="taskStore.newTask ? false : true">Add Task</button>
+    <button
+      id="task-submit-btn"
+      name="task-submit-btn"
+      :disabled="taskStore.newTask ? false : true"
+    >
+      Add Task
+    </button>
   </form>
 </template>
 

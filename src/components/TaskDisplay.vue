@@ -48,54 +48,62 @@ function handleDragend() {
 </script>
 
 <template>
-  <div class="radioContainer">
-    <label for="all">
-      <input type="radio" id="all" v-model="showAllTask" :value="true" />
-      Show All
-    </label>
-    <label for="incomplete">
-      <input
-        type="radio"
-        id="incomplete"
-        v-model="showAllTask"
-        :value="false"
-      />
-      Show Incompleted
-    </label>
-  </div>
+  <section aria-label="tasks">
+    <div class="radioContainer">
+      <label for="all">
+        <input type="radio" id="all" v-model="showAllTask" :value="true" />
+        Show All
+      </label>
+      <label for="incomplete">
+        <input
+          type="radio"
+          id="incomplete"
+          v-model="showAllTask"
+          :value="false"
+        />
+        Show Incompleted
+      </label>
+    </div>
 
-  <TransitionGroup name="task" tag="ul" class="container">
-    <li
-      class="task"
-      v-for="(task, index) in tasks"
-      :key="task.id"
-      :style="{
-        backgroundColor: index % 2 === 0 ? theme?.inputBgColor : '',
-        outline:
-          dragTaskHover && dragTaskHover.id === task.id
-            ? `2px solid ${theme?.accentColor}`
-            : '2px solid transparent',
-      }"
-      :draggable="dt.fromISO(task.createdAt).weekday === today"
-      @dragstart="() => handleDragstart(task)"
-      @dragover="() => handleDragover(task)"
-      @dragend="handleDragend"
-      :data-task="task.id"
-    >
-      <TaskItem
-        :task="task"
-        v-if="dt.fromISO(task.createdAt).weekday === today"
-      />
-      <OldTaskItem
-        :task-item="task"
-        :handle-click="() => taskStore.moveTask(task)"
-        v-else
-      />
-    </li>
-  </TransitionGroup>
+    <TransitionGroup name="task" tag="ul" class="container">
+      <li
+        class="task"
+        v-for="(task, index) in tasks"
+        :key="task.id"
+        :style="{
+          backgroundColor: index % 2 === 0 ? theme?.inputBgColor : '',
+          outline:
+            dragTaskHover && dragTaskHover.id === task.id
+              ? `2px solid ${theme?.accentColor}`
+              : '2px solid transparent',
+        }"
+        :draggable="dt.fromISO(task.createdAt).weekday === today"
+        @dragstart="() => handleDragstart(task)"
+        @dragover="() => handleDragover(task)"
+        @dragend="handleDragend"
+        :data-task="task.id"
+      >
+        <TaskItem
+          :task="task"
+          v-if="dt.fromISO(task.createdAt).weekday === today"
+        />
+        <OldTaskItem
+          :task-item="task"
+          :handle-click="() => taskStore.moveTask(task)"
+          v-else
+        />
+      </li>
+    </TransitionGroup>
+  </section>
 </template>
 
 <style scoped>
+section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -106,8 +114,9 @@ function handleDragend() {
 
 .radioContainer {
   display: flex;
-  gap: 20px;
-  width: fit-content;
+  gap: 25px;
+  justify-content: center;
+  padding: 10px 0;
 }
 
 .task {

@@ -11,10 +11,12 @@ const props = withDefaults(
 
 <template>
   <header class="header" :style="{ backgroundColor: theme?.bgColor }">
-    <div class="btnContainer">
-      <h1 :style="{ color: theme?.accentColor }">today</h1>
-      <p>about</p>
-    </div>
+    <nav class="btnContainer">
+      <h1 id="logo" class="navItem logo" :style="{ color: theme?.accentColor }">
+        today
+      </h1>
+      <button id="info" class="navItem">about</button>
+    </nav>
     <SwitchBtn :on-change="props.onToggle" :state="toggleState" />
   </header>
 </template>
@@ -36,8 +38,10 @@ const props = withDefaults(
   font-size: 1.1rem;
 }
 
-h1 {
+.navItem {
   font-size: inherit;
+}
+.logo {
   font-weight: 800;
 }
 </style>

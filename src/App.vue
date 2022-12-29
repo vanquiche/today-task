@@ -76,8 +76,8 @@ onMounted(() => {
 
 <template>
   <ModalDialog />
-  <section
-    class="container"
+  <main
+    class="main"
     :class="[toggleTheme ? 'blackDotPattern' : 'whiteDotPattern']"
     :style="{ backgroundColor: theme.bgColor, color: theme.color }"
   >
@@ -89,11 +89,11 @@ onMounted(() => {
     />
     <TaskForm :selected-date="dateRange.selected()" />
     <TaskDisplay :tasks="selectedTasks" />
-  </section>
+  </main>
 </template>
 
 <style scoped>
-.container {
+.main {
   padding: 0;
   padding-bottom: 2rem;
   display: flex;

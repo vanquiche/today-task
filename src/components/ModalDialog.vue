@@ -15,7 +15,22 @@ function clickModal(e: Event) {
 
 <template>
   <div class="overlay" @click="modal.close" v-if="modal.state">
-    <div class="modal" @click="clickModal"></div>
+    <div
+      class="modal"
+      @click="clickModal"
+      role="modal"
+      aria-modal="true"
+      aria-labelledby="modal_label"
+      aria-describedby="modal_description"
+    >
+      <h1 id="modal_label">What is today?</h1>
+      <p id="modal_description">
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt delectus
+        aspernatur maxime ducimus quod eos totam, ab officiis perspiciatis
+        corporis! Illum nihil excepturi tempore, iusto consequatur voluptas
+        atque ad! Blanditiis?
+      </p>
+    </div>
   </div>
 </template>
 

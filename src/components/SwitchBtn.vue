@@ -11,31 +11,49 @@ const theme = inject<ThemeType>("theme");
 
 <template>
   <div
+    id="switch-wrapper"
     class="switchContainer"
-    :style="{
-      backgroundColor: theme?.switchBgColor,
-    }"
+    @keyup.enter="props.onChange"
+    tabindex="0"
   >
-    <span
-      class="switch control"
-      :class="[props.state ? 'left' : 'right']"
-      tabindex="0"
-    ></span>
-    <input
-      type="checkbox"
-      id="theme"
-      name="theme"
-      class="switch hide"
-      :class="[props.state ? 'left' : 'right']"
-      :value="props.state"
-      @change="props.onChange"
-      tabindex="-1"
-    />
+    <div
+      id="switch-bg"
+      class="switchBg"
+      :style="{
+        backgroundColor: theme?.switchBgColor,
+      }"
+    >
+      <span
+        id="switch-indicator"
+        class="switch control"
+        :class="[props.state ? 'left' : 'right']"
+        tabindex="-1"
+      ></span>
+      <input
+        type="checkbox"
+        id="theme-select"
+        class="switch hide"
+        :class="[props.state ? 'left' : 'right']"
+        :value="props.state"
+        @change="props.onChange"
+        tabindex="-1"
+        role="switch"
+        @aria-checked="props.state"
+        :aria-label="props.state ? 'dark theme' : 'light theme'"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped>
 .switchContainer {
+  padding: 5px;
+  border-radius: 5px;
+}
+input {
+  z-index: 10;
+}
+.switchBg {
   width: 50px;
   position: relative;
   height: 25px;
@@ -46,8 +64,8 @@ const theme = inject<ThemeType>("theme");
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  height: 105%;
-  width: 55%;
+  height: 100%;
+  width: 50%;
   cursor: pointer;
 }
 
@@ -55,6 +73,8 @@ const theme = inject<ThemeType>("theme");
   background-color: rgb(110, 112, 212);
   border-radius: 50%;
   transition: left 100ms ease-out;
+  z-index: 20;
+  pointer-events: none;
 }
 
 .hide {
