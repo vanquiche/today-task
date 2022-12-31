@@ -13,10 +13,10 @@ export const useTaskStore = defineStore("tasks", () => {
   const newTask = ref("");
   const editTask = ref("");
 
-  function addTask() {
-    if (!newTask.value) return;
-    const lastPosition = Math.max(...tasks.value.map((t) => t.position));
-    const task: TaskType = {
+  function addTask(customTask?: TaskType) {
+    if (!newTask.value && !customTask) return;
+    const lastPosition = Math.max(...tasks.value.map((t) => t.position), 0);
+    const task: TaskType = customTask || {
       id: createId(),
       completed: false,
       task: newTask.value.trim(),
