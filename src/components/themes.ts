@@ -1,6 +1,6 @@
 export const lightTheme: ThemeType = {
-  bgColor: "white",
-  color: "black",
+  bgColor: "rgb(255, 255, 255)",
+  color: "rgb(0, 0, 0)",
   inputBgColor: "rgb(220, 230, 230)",
   disabledInputColor: "rgb(240, 240, 240)",
   switchBgColor: "rgb(43, 43, 43)",
@@ -8,8 +8,8 @@ export const lightTheme: ThemeType = {
 };
 
 export const darkTheme: ThemeType = {
-  bgColor: "black",
-  color: "white",
+  bgColor: "rgb(0, 0, 0)",
+  color: "rgb(255, 255, 255)",
   inputBgColor: "rgb(43, 43, 43)",
   disabledInputColor: "rgb(20, 20, 20)",
   switchBgColor: "rgb(240, 240, 240)",
