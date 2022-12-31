@@ -36,4 +36,32 @@
 //   }
 // }
 
+Cypress.Commands.add("createTask", (task: string) => {
+  cy.get("[data-testid='newTaskInput'").type(task);
+  cy.get("[data-testid='newTaskSubmit']").click();
+});
+
+Cypress.Commands.add("getByDataId", (id: string) => {
+  return cy.get(`[data-testid=${id}]`);
+});
+
+Cypress.Commands.add("getChildEl", (parentId: string, childId: string) => {
+  return cy
+    .get(`[data-testid=${parentId}]`)
+    .children(`[data-testid=${childId}]`);
+});
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      createTask(task: string): Chainable<void>;
+      getByDataId(task: string): Chainable<JQuery<HTMLElement>>;
+      getChildEl(
+        parentId: string,
+        childId: string
+      ): Chainable<JQuery<HTMLElement>>;
+    }
+  }
+}
+
 export {};
