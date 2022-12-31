@@ -40,6 +40,7 @@ const theme = inject<ThemeType>("theme");
         role="switch"
         @aria-checked="props.state"
         :aria-label="props.state ? 'dark theme' : 'light theme'"
+        data-testid="themeToggle"
       />
     </div>
   </div>

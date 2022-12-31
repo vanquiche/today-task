@@ -10,7 +10,11 @@ const props = withDefaults(
 </script>
 
 <template>
-  <header class="header" :style="{ backgroundColor: theme?.bgColor }">
+  <header
+    id="navbar"
+    class="header"
+    :style="{ backgroundColor: theme?.bgColor }"
+  >
     <nav class="btnContainer">
       <h1 id="logo" class="navItem logo" :style="{ color: theme?.accentColor }">
         today

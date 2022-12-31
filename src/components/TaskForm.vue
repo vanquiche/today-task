@@ -36,12 +36,14 @@ const disableInput = computed(() =>
       maxlength="85"
       :disabled="disableInput"
       aria-label="Add new task"
+      data-testid="newTaskInput"
       required
     />
     <button
       id="task-submit-btn"
       name="task-submit-btn"
       :disabled="taskStore.newTask ? false : true"
+      data-testid="newTaskSubmit"
     >
       Add Task
     </button>

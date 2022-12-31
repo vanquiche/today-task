@@ -34,6 +34,7 @@ function handleEditSumbit(id: string) {
     @click="() => taskStore.toggleComplete(props.task.id)"
     class="completeBtn"
     :aria-label="props.task.completed ? 'task complete' : 'task incomplete'"
+    data-testid="toggleComplete"
   >
     <font-awesome-icon
       v-if="props.task.completed"
@@ -44,13 +45,11 @@ function handleEditSumbit(id: string) {
   </button>
   <div class="taskContainer">
     <form
-      id="editTaskForm"
       aria-label="Edit task"
       v-if="canEdit"
       @submit.prevent="() => handleEditSumbit(props.task.id)"
     >
       <input
-        id="editTaskInput"
         ref="edit"
         type="text"
         @input="taskStore.inputEditTask"
@@ -59,6 +58,7 @@ function handleEditSumbit(id: string) {
         :onblur="handleBlur"
         autocomplete="off"
         maxlength="85"
+        data-testid="editTaskInput"
       />
     </form>
     <p v-else :class="[props.task.completed ? 'strikethrough' : undefined]">
@@ -70,6 +70,7 @@ function handleEditSumbit(id: string) {
     @click="handleEditClick"
     class="controlBtn"
     aria-label="edit task"
+    data-testid="editTask"
   >
     <font-awesome-icon class="btn" icon="fa-solid fa-edit" />
   </button>
@@ -79,6 +80,7 @@ function handleEditSumbit(id: string) {
     @click="handleBlur"
     class="controlBtn"
     aria-label="reset edit"
+    data-testid="resetTask"
   >
     <font-awesome-icon class="btn" icon="fa-solid fa-rotate-left" />
   </button>
@@ -86,6 +88,7 @@ function handleEditSumbit(id: string) {
     @click="() => taskStore.deleteTask(task)"
     class="controlBtn"
     aria-label="delete task"
+    data-testid="deleteTask"
   >
     <font-awesome-icon class="btn" icon="fa-solid fa-xmark" size="lg" />
   </button>
@@ -103,7 +106,6 @@ button {
   width: 90%;
   overflow-x: hidden;
   padding: 0 10px;
-  /* outline: 1px solid red; */
 }
 
 input {

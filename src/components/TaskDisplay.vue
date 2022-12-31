@@ -51,7 +51,13 @@ function handleDragend() {
   <section aria-label="tasks">
     <div class="radioContainer">
       <label for="all">
-        <input type="radio" id="all" v-model="showAllTask" :value="true" />
+        <input
+          type="radio"
+          id="all"
+          v-model="showAllTask"
+          :value="true"
+          data-testid="filterAll"
+        />
         Show All
       </label>
       <label for="incomplete">
@@ -60,6 +66,7 @@ function handleDragend() {
           id="incomplete"
           v-model="showAllTask"
           :value="false"
+          data-testid="filterIncomplete"
         />
         Show Incompleted
       </label>
@@ -81,7 +88,7 @@ function handleDragend() {
         @dragstart="() => handleDragstart(task)"
         @dragover="() => handleDragover(task)"
         @dragend="handleDragend"
-        :data-task="task.id"
+        :data-testid="`task-${index}`"
       >
         <TaskItem
           :task="task"
