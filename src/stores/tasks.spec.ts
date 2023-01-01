@@ -3,6 +3,7 @@ import { setActivePinia, createPinia } from "pinia";
 import { useTaskStore } from "@/stores/task";
 import { DateTime } from "luxon";
 import type { TaskType } from "@/types";
+import "@4tw/cypress-drag-drop";
 
 describe("Task Store", () => {
   beforeEach(() => {
@@ -51,7 +52,7 @@ describe("Task Store", () => {
     expect(taskStore.tasks[0].position).toBe(4);
   });
 
-  it("update createdAt value to today's date", () => {
+  it("move old task to current date i.e update createdAt value to today", () => {
     const dt = DateTime;
     const taskStore = useTaskStore();
     const oldTask: TaskType = {
@@ -86,4 +87,5 @@ describe("Task Store", () => {
     });
     expect(taskStore.daysWithTasks).toStrictEqual([6, 5]);
   });
+  xit("reposition task by drag and drop", () => {});
 });
