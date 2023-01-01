@@ -10,11 +10,12 @@ const taskStore = useTaskStore();
 // state
 const canEdit = ref(false);
 const edit = ref<HTMLInputElement>();
+const taskInput = ref(props.task.task);
 
 // methods
 function handleBlur() {
   canEdit.value = false;
-  taskStore.editTask = "";
+  taskInput.value = "";
 }
 async function handleEditClick() {
   canEdit.value = true;
@@ -23,8 +24,8 @@ async function handleEditClick() {
     edit.value.focus();
   }
 }
-function handleEditSumbit(id: string) {
-  taskStore.updateEdit(id);
+function handleSumbit(id: string) {
+  taskStore.updateEdit(id, taskInput.value);
   canEdit.value = false;
 }
 </script>
@@ -47,13 +48,12 @@ function handleEditSumbit(id: string) {
     <form
       aria-label="Edit task"
       v-if="canEdit"
-      @submit.prevent="() => handleEditSumbit(props.task.id)"
+      @submit.prevent="() => handleSumbit(props.task.id)"
     >
       <input
         ref="edit"
         type="text"
-        @input="taskStore.inputEditTask"
-        :value="props.task.task"
+        v-model="taskInput"
         :disabled="!canEdit"
         :onblur="handleBlur"
         autocomplete="off"

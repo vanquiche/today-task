@@ -3,7 +3,7 @@ import { setActivePinia, createPinia } from "pinia";
 import { useTaskStore } from "@/stores/task";
 import { DateTime } from "luxon";
 import type { TaskType } from "@/types";
-import "@4tw/cypress-drag-drop";
+// import "@4tw/cypress-drag-drop";
 
 describe("Task Store", () => {
   beforeEach(() => {
@@ -12,32 +12,27 @@ describe("Task Store", () => {
 
   it("adds new task", () => {
     const taskStore = useTaskStore();
-    taskStore.newTask = "new task";
-    taskStore.addTask();
+    taskStore.addTask("new task");
     expect(taskStore.tasks.length).toBe(1);
   });
 
   it("edit/update task", () => {
     const taskStore = useTaskStore();
-    taskStore.newTask = "new task";
-    taskStore.addTask();
-    taskStore.editTask = "edited task";
-    taskStore.updateEdit(taskStore.tasks[0].id);
+    taskStore.addTask("new task");
+    taskStore.updateEdit(taskStore.tasks[0].id, "edited task");
     expect(taskStore.tasks[0].task).toBe("edited task");
   });
 
   it("delete task", () => {
     const taskStore = useTaskStore();
-    taskStore.newTask = "new task";
-    taskStore.addTask();
+    taskStore.addTask("new task");
     taskStore.deleteTask(taskStore.tasks[0]);
     expect(taskStore.tasks.length).toBe(0);
   });
 
   it("complete task", () => {
     const taskStore = useTaskStore();
-    taskStore.newTask = "completed task";
-    taskStore.addTask();
+    taskStore.addTask("completed task");
     taskStore.toggleComplete(taskStore.tasks[0].id);
     expect(taskStore.tasks[0].completed).toBe(true);
   });
@@ -45,8 +40,7 @@ describe("Task Store", () => {
   it("update position", () => {
     const taskStore = useTaskStore();
     ["1", "2", "3", "4", "5"].forEach((task) => {
-      taskStore.newTask = task;
-      taskStore.addTask();
+      taskStore.addTask(task);
     });
     taskStore.updatePosition(taskStore.tasks[0], taskStore.tasks[3]);
     expect(taskStore.tasks[0].position).toBe(4);
@@ -55,17 +49,9 @@ describe("Task Store", () => {
   it("move old task to current date i.e update createdAt value to today", () => {
     const dt = DateTime;
     const taskStore = useTaskStore();
-    const oldTask: TaskType = {
-      id: "001",
-      task: "Old Task",
-      position: 0,
-      completed: false,
-      createdAt: dt.now().minus({ days: 2 }).toISO(),
-    };
-    taskStore.addTask(oldTask);
-    taskStore.newTask = "Latest Task";
-    taskStore.addTask();
-    taskStore.moveTask(oldTask);
+    taskStore.addTask("Old Task", dt.now().minus({ days: 2 }).toISO());
+    taskStore.addTask("Latest Task");
+    taskStore.moveTask(taskStore.tasks[0]);
     expect(dt.fromISO(taskStore.tasks[0].createdAt).weekday).toBe(
       dt.fromISO(taskStore.tasks[1].createdAt).weekday
     );
@@ -75,17 +61,12 @@ describe("Task Store", () => {
     const taskStore = useTaskStore();
     const dt = DateTime;
     [...Array(3)].forEach((_, i) => {
-      const task: TaskType = {
-        id: i.toString(),
-        position: i + 1,
-        task: `Task ${i}`,
-        completed: false,
-        createdAt:
-          i % 2 === 0 ? dt.now().toISO() : dt.now().minus({ days: i }).toISO(),
-      };
-      taskStore.addTask(task);
+      taskStore.addTask(`Task ${i}`, dt.now().minus({ days: i }).toISO());
     });
-    expect(taskStore.daysWithTasks).toStrictEqual([6, 5]);
+    expect(taskStore.daysWithTasks).toStrictEqual([
+      dt.now().weekday,
+      dt.now().minus({ days: 1 }).weekday,
+      dt.now().minus({ days: 2 }).weekday,
+    ]);
   });
-  xit("reposition task by drag and drop", () => {});
 });

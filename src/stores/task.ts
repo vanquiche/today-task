@@ -10,24 +10,19 @@ const dt = DateTime;
 export const useTaskStore = defineStore("tasks", () => {
   // STATE
   const tasks = ref<TaskType[]>([]);
-  const newTask = ref("");
-  const editTask = ref("");
 
-  function addTask(customTask?: TaskType) {
-    if (!newTask.value && !customTask) return;
+  function addTask(addTask: string, date?: string) {
+    if (!addTask) return;
     const lastPosition = Math.max(...tasks.value.map((t) => t.position), 0);
-    const task: TaskType = customTask?.task
-      ? customTask
-      : {
-          id: createId(),
-          completed: false,
-          task: newTask.value.trim(),
-          createdAt: dt.now().toISO(),
-          position: lastPosition + 1,
-        };
+    const task: TaskType = {
+      id: createId(),
+      completed: false,
+      task: addTask.trim(),
+      createdAt: date ? date : dt.now().toISO(),
+      position: lastPosition + 1,
+    };
 
     tasks.value.push(task);
-    newTask.value = "";
   }
 
   function moveTask(copyTask: TaskType) {
@@ -65,18 +60,10 @@ export const useTaskStore = defineStore("tasks", () => {
       });
   }
 
-  function inputEditTask(e: Event) {
-    const el = e.target as HTMLInputElement;
-    editTask.value = el.value;
-  }
-
-  function updateEdit(id: string) {
-    if (editTask.value === "") return;
-    else {
-      const index = tasks.value.findIndex((t) => t.id === id);
-      tasks.value[index].task = editTask.value;
-      editTask.value = "";
-    }
+  function updateEdit(id: string, editedTask: string) {
+    if (!editedTask) return;
+    const index = tasks.value.findIndex((t) => t.id === id);
+    tasks.value[index].task = editedTask;
   }
 
   function updatePosition(start: TaskType, end: TaskType) {
@@ -132,14 +119,11 @@ export const useTaskStore = defineStore("tasks", () => {
 
   return {
     tasks,
-    newTask,
-    editTask,
     daysWithTasks,
     addTask,
     moveTask,
     updateEdit,
     deleteTask,
-    inputEditTask,
     updatePosition,
     toggleComplete,
   };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, computed } from "vue";
+import { inject, computed, ref } from "vue";
 import { useTaskStore } from "@/stores/task";
 import type { ThemeType } from "./themes";
 import type { DateTime as DateTimeType } from "luxon";
@@ -12,17 +12,19 @@ const props = withDefaults(
   defineProps<{ selectedDate: DateTimeType["weekday"] }>(),
   {}
 );
+const taskInput = ref("");
+
+function submitTask() {
+  taskStore.addTask(taskInput.value);
+  taskInput.value = "";
+}
 const disableInput = computed(() =>
   props.selectedDate !== today ? true : false
 );
 </script>
 
 <template>
-  <form
-    id="task-form"
-    @submit.prevent="taskStore.addTask"
-    aria-label="Add new task"
-  >
+  <form id="task-form" @submit.prevent="submitTask" aria-label="Add new task">
     <input
       type="text"
       id="newTaskInput"
@@ -30,7 +32,7 @@ const disableInput = computed(() =>
         backgroundColor: theme?.inputBgColor,
         color: theme?.color,
       }"
-      v-model="taskStore.newTask"
+      v-model="taskInput"
       :placeholder="disableInput ? '...' : 'do something today'"
       autocomplete="off"
       maxlength="85"
@@ -42,7 +44,7 @@ const disableInput = computed(() =>
     <button
       id="task-submit-btn"
       name="task-submit-btn"
-      :disabled="taskStore.newTask ? false : true"
+      :disabled="taskInput ? false : true"
       data-testid="newTaskSubmit"
     >
       Add Task
