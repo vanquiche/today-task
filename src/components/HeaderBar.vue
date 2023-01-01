@@ -4,7 +4,11 @@ import { inject } from "vue";
 import type { ThemeType } from "./themes";
 const theme = inject<ThemeType>("theme");
 const props = withDefaults(
-  defineProps<{ onToggle: () => void; toggleState: boolean }>(),
+  defineProps<{
+    onToggle: () => void;
+    toggleState: boolean;
+    onClick: () => void;
+  }>(),
   {}
 );
 </script>
@@ -19,7 +23,7 @@ const props = withDefaults(
       <h1 id="logo" class="navItem logo" :style="{ color: theme?.accentColor }">
         today
       </h1>
-      <button id="info" class="navItem">about</button>
+      <button id="info" class="navItem" @click="props.onClick">about</button>
     </nav>
     <SwitchBtn :on-change="props.onToggle" :state="toggleState" />
   </header>

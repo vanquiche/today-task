@@ -81,7 +81,11 @@ onMounted(() => {
     :class="[toggleTheme ? 'blackDotPattern' : 'whiteDotPattern']"
     :style="{ backgroundColor: theme.bgColor, color: theme.color }"
   >
-    <HeaderBar :on-toggle="handleToggleSwitch" :toggle-state="toggleTheme" />
+    <HeaderBar
+      :on-toggle="handleToggleSwitch"
+      :toggle-state="toggleTheme"
+      :on-click="() => modal.open()"
+    />
     <DateRange
       :selected-date="dateRange.selected()"
       :increment-date="handleDateIncrement"
