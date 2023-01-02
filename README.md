@@ -1,68 +1,30 @@
-# today-tasks
+# Today Task
 
-This template should help get you started developing with Vue 3 in Vite.
+Today is a simple task list app that is designed to help you quickly focus on today's tasks without the hindrance of overwhelming options. If you're looking for task list that is no fuss, no BS, just what you want to get done, then Today is for you!
 
-## Recommended IDE Setup
+Check out the app here (...coming soon)!
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## App Features
 
-## Type Support for `.vue` Imports in TS
+- Be present! Focus only on what you want to get done Today!
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+- Tasking has never been easier! Create, edit, delete, and complete tasks with speed and ease.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+- Sort tasks is easy as 1-2-3. Simply drag and drop your task to where you want it.
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+- Couldn't complete a task from a previous day? Move an old task to Today by cycling through previous days within the current week.
 
-## Customize configuration
+- Not a fan of dark themes? With the theme toggle, you can switch between light and dark to your heart's content!
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+![today demo](https://res.cloudinary.com/dvrs8gsj3/image/upload/v1672664079/today-task/today-demo-1_yhio3z.png)
 
-## Project Setup
+## Tech-Stack
 
-```sh
-npm install
-```
+This project was bootstrapped by create-vue with:
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run test:e2e:dev
-```
-
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+- Coded in TypeScript
+- Pinia for state management
+- Vitest for Unit testing
+- Cypress for end-to-end testing
+- Prettier for code formatting
+- Icons from FontAwesome
