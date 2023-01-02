@@ -23,7 +23,10 @@ import {
   faAnglesRight,
   faSun,
   faMoon,
+  faWindowMaximize,
 } from "@fortawesome/free-solid-svg-icons";
+
+import { faTwitter, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 import { faSquareCheck, faSquare } from "@fortawesome/free-regular-svg-icons";
 
@@ -41,7 +44,10 @@ library.add(
   faCircleArrowRight,
   faAnglesRight,
   faSun,
-  faMoon
+  faMoon,
+  faTwitter,
+  faGithub,
+  faWindowMaximize
 );
 
 // app.use(createPinia());

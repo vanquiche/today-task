@@ -73,6 +73,17 @@ function clickModal(e: Event) {
             switch between light and dark to your heart's content!
           </li>
         </ul>
+        <div class="linkContainer">
+          <a href="https://twitter.com/stevevangdev" title="twitter">
+            <font-awesome-icon icon="fa-brands fa-twitter" size="xl" />
+          </a>
+          <a href="https://github.com/vanquiche" title="github">
+            <font-awesome-icon icon="fa-brands fa-github" size="xl" />
+          </a>
+          <a href="https://stevevangdev.com" title="steve vang website">
+            <font-awesome-icon icon="fa-solid fa-window-maximize" size="xl" />
+          </a>
+        </div>
         <small
           >&copy; Copyright {{ new Date().getFullYear() }} Steve Vang</small
         >
@@ -126,6 +137,13 @@ function clickModal(e: Event) {
   position: absolute;
   top: 15px;
   right: 15px;
+}
+
+.linkContainer {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
 }
 
 b {
