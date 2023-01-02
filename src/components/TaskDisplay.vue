@@ -72,7 +72,7 @@ function handleDragend() {
       </label>
     </div>
 
-    <TransitionGroup name="task" tag="ul" class="container">
+    <TransitionGroup name="task" tag="ul" class="container" id="taskContainer">
       <li
         class="task"
         v-for="(task, index) in tasks"
