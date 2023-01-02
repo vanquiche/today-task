@@ -14,6 +14,7 @@ const theme = inject<ThemeType>("theme", darkTheme);
     id="switch-wrapper"
     class="switchContainer"
     @keyup.enter="props.onChange"
+    @keyup.space="props.onChange"
     tabindex="0"
   >
     <div
