@@ -19,13 +19,26 @@ const props = withDefaults(
     class="header"
     :style="{ backgroundColor: theme?.bgColor }"
   >
-    <nav class="btnContainer">
-      <h1 id="logo" class="navItem logo" :style="{ color: theme?.accentColor }">
-        today
-      </h1>
-      <button id="info" class="navItem" @click="props.onClick">about</button>
+    <nav class="nav">
+      <div>
+        <h1
+          id="logo"
+          class="navItem logo"
+          :style="{ color: theme?.accentColor }"
+        >
+          Today
+        </h1>
+        <button
+          id="info"
+          class="navItem"
+          @click="props.onClick"
+          data-testid="aboutBtn"
+        >
+          about
+        </button>
+      </div>
+      <SwitchBtn :on-change="props.onToggle" :state="toggleState" />
     </nav>
-    <SwitchBtn :on-change="props.onToggle" :state="toggleState" />
   </header>
 </template>
 
@@ -33,17 +46,25 @@ const props = withDefaults(
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0 20px;
   width: 100%;
   height: 70px;
   margin: 0;
   z-index: 100;
 }
-.btnContainer {
+.nav {
   display: flex;
+  width: 100%;
+  justify-content: space-between;
+  max-width: 1600px;
+  font-size: 1.2rem;
+}
+
+.nav div {
+  display: flex;
+  align-items: center;
   gap: 30px;
-  font-size: 1.1rem;
 }
 
 .navItem {
