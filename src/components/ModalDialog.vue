@@ -41,7 +41,7 @@ function clickModal(e: Event) {
           aria-label="close modal"
           data-testid="closeModal"
         >
-          <font-awesome-icon class="btn" icon="fa-solid fa-xmark" size="lg" />
+          <font-awesome-icon class="btn" icon="fa-solid fa-xmark" size="xl" />
         </button>
         <h1 id="modal_label" class="title">What is Today?</h1>
         <p id="modal_description" class="para">
@@ -120,6 +120,7 @@ function clickModal(e: Event) {
   align-items: center;
   gap: 0.7rem;
   overflow-y: scroll;
+  position: relative;
 }
 
 .list {
@@ -130,13 +131,13 @@ function clickModal(e: Event) {
   /* text-align: center; */
 }
 .title {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 
 .closeBtn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
+  position: fixed;
+  top: 6%;
+  right: 6%;
 }
 
 .linkContainer {
