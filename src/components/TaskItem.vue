@@ -58,7 +58,7 @@ function handleSumbit(id: string) {
         :disabled="!canEdit"
         :onblur="handleBlur"
         autocomplete="off"
-        maxlength="85"
+        maxlength="135"
         data-testid="editTaskInput"
       />
     </form>

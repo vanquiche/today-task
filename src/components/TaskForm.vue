@@ -35,7 +35,7 @@ const disableInput = computed(() =>
       v-model="taskInput"
       :placeholder="disableInput ? '...' : 'do something today'"
       autocomplete="off"
-      maxlength="85"
+      maxlength="135"
       :disabled="disableInput"
       aria-label="Add new task"
       data-testid="newTaskInput"
