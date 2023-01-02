@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TaskItem from "@/components/TaskItem.vue";
-import type { ThemeType } from "./themes";
+import { darkTheme, type ThemeType } from "./themes";
 import { ref, computed, inject } from "vue";
 import { useTaskStore } from "@/stores/task";
 import { DateTime } from "luxon";
@@ -10,7 +10,8 @@ import OldTaskItem from "./OldTaskItem.vue";
 const props = withDefaults(defineProps<{ tasks: TaskType[] }>(), {});
 
 const showAllTask = ref<boolean>(true);
-const theme = inject<ThemeType>("theme");
+
+const theme = inject<ThemeType>("theme", darkTheme);
 const taskStore = useTaskStore();
 const dt = DateTime;
 const today = dt.now().weekday;
@@ -50,25 +51,52 @@ function handleDragend() {
 <template>
   <section aria-label="tasks">
     <div class="radioContainer">
-      <label for="all">
+      <label for="all" class="radioLabel">
+        <font-awesome-icon
+          icon="fa-regular fa-square"
+          v-if="!showAllTask"
+          aria-hidden="true"
+        />
+        <font-awesome-icon
+          icon="fa-regular fa-square-check"
+          v-else
+          aria-hidden="true"
+        />
+
         <input
           type="radio"
           id="all"
+          class="radio"
           v-model="showAllTask"
           :value="true"
           data-testid="filterAll"
+          @keyup.enter="() => (showAllTask = true)"
+          :aria-checked="!showAllTask"
         />
-        Show All
+        All Tasks
       </label>
-      <label for="incomplete">
+      <label for="incomplete" class="radioLabel">
+        <font-awesome-icon
+          icon="fa-regular fa-square"
+          v-if="showAllTask"
+          aria-hidden="true"
+        />
+        <font-awesome-icon
+          icon="fa-regular fa-square-check"
+          v-else
+          aria-hidden="true"
+        />
         <input
           type="radio"
           id="incomplete"
+          class="radio"
           v-model="showAllTask"
           :value="false"
+          :aria-checked="showAllTask"
+          @keyup.enter="() => (showAllTask = false)"
           data-testid="filterIncomplete"
         />
-        Show Incompleted
+        Uncompleted Tasks
       </label>
     </div>
 
@@ -78,10 +106,10 @@ function handleDragend() {
         v-for="(task, index) in tasks"
         :key="task.id"
         :style="{
-          backgroundColor: index % 2 === 0 ? theme?.inputBgColor : '',
+          backgroundColor: index % 2 === 0 ? theme.inputBgColor : '',
           outline:
             dragTaskHover && dragTaskHover.id === task.id
-              ? `2px solid ${theme?.accentColor}`
+              ? `2px solid ${theme.accentColor}`
               : '2px solid transparent',
         }"
         :draggable="dt.fromISO(task.createdAt).weekday === today"
@@ -123,7 +151,23 @@ section {
   display: flex;
   gap: 25px;
   justify-content: center;
+  align-items: center;
   padding: 10px 0;
+}
+
+.radio {
+  appearance: none;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .task {
