@@ -6,6 +6,23 @@ html,
   height: 100%;
   width: 100%;
   overflow-x: hidden;
+  font-size: 1rem;
+}
+
+input[type="text"] {
+  font-size: 1rem;
+}
+
+.btn-std {
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  background-color: rgb(110, 112, 212);
+}
+
+.btn-std:disabled {
+  color: rgb(172, 172, 172);
 }
 
 a,
@@ -27,8 +44,11 @@ button:disabled {
   filter: saturate(0);
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+@media screen and (max-width: 500px) {
+  #app {
+    font-size: 0.85rem;
+  }
+  input[type="text"] {
+    font-size: 0.85rem;
   }
 }

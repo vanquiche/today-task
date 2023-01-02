@@ -46,6 +46,7 @@ const disableInput = computed(() =>
       name="task-submit-btn"
       :disabled="taskInput ? false : true"
       data-testid="newTaskSubmit"
+      class="btn-std"
     >
       Add Task
     </button>
@@ -60,18 +61,6 @@ form {
   gap: 10px;
   /* outline: 1px solid red; */
   padding: 0 20px;
-}
-
-button {
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  color: white;
-  background-color: rgb(110, 112, 212);
-}
-
-button:disabled {
-  color: rgb(172, 172, 172);
 }
 
 input {
