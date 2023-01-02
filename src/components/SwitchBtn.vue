@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { inject } from "vue";
-import type { ThemeType } from "./themes";
+import { darkTheme, type ThemeType } from "./themes";
 
 const props = withDefaults(
   defineProps<{ state: Boolean; onChange: () => void }>(),
   {}
 );
-const theme = inject<ThemeType>("theme");
+const theme = inject<ThemeType>("theme", darkTheme);
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const theme = inject<ThemeType>("theme");
       id="switch-bg"
       class="switchBg"
       :style="{
-        backgroundColor: theme?.switchBgColor,
+        backgroundColor: theme.switchBgColor,
       }"
     >
       <span
@@ -41,6 +41,22 @@ const theme = inject<ThemeType>("theme");
         @aria-checked="props.state"
         :aria-label="props.state ? 'dark theme' : 'light theme'"
         data-testid="themeToggle"
+      />
+      <font-awesome-icon
+        v-if="!props.state"
+        icon="fa-solid fa-moon"
+        class="themeIcon moon"
+        :color="theme.bgColor"
+        size="xs"
+        aria-hidden="true"
+      />
+      <font-awesome-icon
+        v-else
+        icon="fa-solid fa-sun"
+        class="themeIcon sun"
+        :color="theme.bgColor"
+        size="xs"
+        aria-hidden="true"
       />
     </div>
   </div>
@@ -88,5 +104,19 @@ input {
 
 .right {
   left: 55%;
+}
+
+.themeIcon {
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+}
+
+.moon {
+  left: 5px;
+}
+
+.sun {
+  right: 5px;
 }
 </style>
