@@ -15,7 +15,7 @@ const taskInput = ref(props.task.task);
 // methods
 function handleBlur() {
   canEdit.value = false;
-  taskInput.value = "";
+  taskInput.value = props.task.task;
 }
 async function handleEditClick() {
   canEdit.value = true;
@@ -25,6 +25,7 @@ async function handleEditClick() {
   }
 }
 function handleSumbit(id: string) {
+  if (!taskInput.value) return;
   taskStore.updateEdit(id, taskInput.value);
   canEdit.value = false;
 }
@@ -126,7 +127,6 @@ input:focus {
 
 p {
   word-wrap: break-word;
-  font-weight: 500;
 }
 
 .task {
