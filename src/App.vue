@@ -113,7 +113,7 @@ onMounted(() => {
 .whiteDotPattern {
   background-image: radial-gradient(
     circle at 1px 1px,
-    rgba(0, 0, 0, 0.3) 1px,
+    rgba(0, 0, 0, 0.18) 1px,
     transparent 0
   );
   background-size: 35px 35px;
@@ -121,7 +121,7 @@ onMounted(() => {
 .blackDotPattern {
   background-image: radial-gradient(
     circle at 1px 1px,
-    rgba(255, 255, 255, 0.3) 1px,
+    rgba(255, 255, 255, 0.18) 1px,
     transparent 0
   );
   background-size: 35px 35px;
