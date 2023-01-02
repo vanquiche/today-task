@@ -1,5 +1,4 @@
 // https://docs.cypress.io/api/introduction/api.html
-
 import { darkTheme, lightTheme } from "../../src/components/themes";
 
 describe("My First Test", () => {
@@ -7,7 +6,7 @@ describe("My First Test", () => {
     cy.visit("/");
   });
   it("visits the app root url", () => {
-    cy.contains("h1", "today");
+    cy.contains("h1", /today/i);
   });
   context("Task Actions", () => {
     it("Create new task", () => {
@@ -54,6 +53,22 @@ describe("My First Test", () => {
       cy.getByDataId("filterIncomplete").click();
       cy.contains("p", "Task 2").should("not.exist");
     });
+
+    it("reorder tasks by drag and drop", () => {
+      cy.createTask("task 1");
+      cy.createTask("task 2");
+      cy.createTask("task 3");
+      cy.createTask("task 4");
+      cy.get("[data-testid='task-3']").trigger("dragstart");
+      cy.get("[data-testid='task-0']").trigger("dragover");
+      cy.get("[data-testid='task-0']").trigger("dragend");
+
+      cy.get("#taskContainer")
+        .find("p")
+        .first()
+        .contains("p", "task 1")
+        .should("exist");
+    });
   });
 
   context("Theme", () => {
@@ -73,6 +88,18 @@ describe("My First Test", () => {
       cy.get("#navbar")
         .should("have.css", "background-color")
         .and("eq", darkTheme.bgColor);
+    });
+  });
+
+  context("Modal", () => {
+    it("Open modal", () => {
+      cy.getByDataId("aboutBtn").click();
+      cy.getByDataId("modal").should("exist");
+    });
+    it("Open and closes modal", () => {
+      cy.getByDataId("aboutBtn").click();
+      cy.getByDataId("closeModal").click();
+      cy.getByDataId("modal").should("not.exist");
     });
   });
 });

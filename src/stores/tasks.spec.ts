@@ -2,8 +2,6 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import { useTaskStore } from "@/stores/task";
 import { DateTime } from "luxon";
-import type { TaskType } from "@/types";
-// import "@4tw/cypress-drag-drop";
 
 describe("Task Store", () => {
   beforeEach(() => {
