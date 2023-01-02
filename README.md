@@ -2,7 +2,7 @@
 
 Today is a simple task list app that is designed to help you quickly focus on today's tasks without the hindrance of overwhelming options. If you're looking for task list that is no fuss, no BS, just what you want to get done, then Today is for you!
 
-Check out the app here (...coming soon)!
+Check out the [live link here](https://todaytasklist.netlify.app/)!
 
 ## App Features
 
