@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import type { ModalProviderType } from "@/types";
+import { darkTheme, type ThemeType } from "./themes";
 
 const modal = inject<ModalProviderType>("modal", {
   state: false,
   open: () => {},
   close: () => {},
 });
+const theme = inject<ThemeType>("theme", darkTheme);
 
 function clickModal(e: Event) {
   e.stopPropagation();
@@ -14,24 +16,69 @@ function clickModal(e: Event) {
 </script>
 
 <template>
-  <div class="overlay" @click="modal.close" v-if="modal.state">
+  <Transition>
     <div
-      class="modal"
-      @click="clickModal"
-      role="modal"
-      aria-modal="true"
-      aria-labelledby="modal_label"
-      aria-describedby="modal_description"
+      id="overlay"
+      class="overlay"
+      @click="modal.close"
+      v-if="modal.state"
+      data-testid="overlay"
     >
-      <h1 id="modal_label">What is today?</h1>
-      <p id="modal_description">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt delectus
-        aspernatur maxime ducimus quod eos totam, ab officiis perspiciatis
-        corporis! Illum nihil excepturi tempore, iusto consequatur voluptas
-        atque ad! Blanditiis?
-      </p>
+      <div
+        id="modal"
+        class="modal"
+        @click="clickModal"
+        :style="{ backgroundColor: theme.inputBgColor, color: theme.color }"
+        role="modal"
+        aria-modal="true"
+        aria-labelledby="modal_label"
+        aria-describedby="modal_description"
+        data-testid="modal"
+      >
+        <button
+          @click="() => modal.close()"
+          class="closeBtn"
+          aria-label="close modal"
+          data-testid="closeModal"
+        >
+          <font-awesome-icon class="btn" icon="fa-solid fa-xmark" size="lg" />
+        </button>
+        <h1 id="modal_label" class="title">What is Today?</h1>
+        <p id="modal_description" class="para">
+          Today is a simple task list app that is designed to help you quickly
+          focus on today's tasks without the hindrance of overwhelming options.
+          If you're looking for task list that is no fuss, no BS, just what you
+          want to get done, then Today is for you!
+        </p>
+        <h2 class="title">Features</h2>
+        <ul class="list">
+          <li>
+            <b>Be present!</b> Focus only on what you want to get done Today!
+          </li>
+          <li>
+            <b>Tasking has never been easier!</b> Create, edit, delete, and
+            complete tasks with speed and ease.
+          </li>
+          <li>
+            <b>Sort tasks is easy as 1-2-3</b>. Simply drag and drop your task
+            to where you want it.
+          </li>
+          <li>
+            <b>Couldn't complete a task from a previous day?</b> Move an old
+            task to Today by cycling through previous days within the current
+            week.
+          </li>
+          <li>
+            <b>Not a fan of dark themes?</b> With the theme toggle, you can
+            switch between light and dark to your heart's content!
+          </li>
+        </ul>
+        <small
+          >&copy; Copyright {{ new Date().getFullYear() }} Steve Vang</small
+        >
+      </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <style scoped>
@@ -40,8 +87,7 @@ function clickModal(e: Event) {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  /* background-color: white; */
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(3px);
   position: fixed;
   top: 0;
   left: 0;
@@ -51,11 +97,49 @@ function clickModal(e: Event) {
   bottom: 100%;
 }
 .modal {
-  width: 80%;
-  height: 80%;
+  width: 90%;
+  height: fit-content;
   max-width: 800px;
-  max-height: 700px;
+  max-height: 90%;
   background-color: white;
-  border-radius: 15px;
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  overflow-y: scroll;
+}
+
+.list {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+.para {
+  /* text-align: center; */
+}
+.title {
+  font-size: 1.75rem;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+b {
+  font-weight: 600;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 300ms ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
 }
 </style>
