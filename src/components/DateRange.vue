@@ -32,6 +32,7 @@ const disableForwardBtn = computed(() =>
 const theme = inject<ThemeType>("theme");
 
 const displayDate = computed(() => {
+  if (props.selectedDate === dt.now().weekday) return "Today";
   const now = dt.local();
   const date = now.startOf("week").plus({ days: props.selectedDate - 1 });
   return date.toLocaleString({ month: "short", day: "numeric" });
@@ -75,5 +76,6 @@ button {
   font-size: 1.2rem;
   width: 135px;
   text-align: center;
+  font-weight: 600;
 }
 </style>
