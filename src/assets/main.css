@@ -47,9 +47,9 @@ button:disabled {
 }
 
 @media screen and (max-width: 500px) {
-  /* #app {
-    font-size: 16px;
-  } */
+  #app {
+    font-size: 0.85rem;
+  }
   #app p {
     font-size: 16px;
   }
