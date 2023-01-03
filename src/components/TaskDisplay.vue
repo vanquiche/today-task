@@ -49,9 +49,13 @@ function handleDragend() {
 </script>
 
 <template>
-  <section aria-label="tasks">
-    <div class="radioContainer">
-      <label for="all" class="radioLabel">
+  <section>
+    <div class="btnContainer">
+      <button
+        class="filterBtn"
+        @click="() => (showAllTask = true)"
+        aria-label="show all tasks"
+      >
         <font-awesome-icon
           icon="fa-regular fa-square"
           v-if="!showAllTask"
@@ -62,20 +66,13 @@ function handleDragend() {
           v-else
           aria-hidden="true"
         />
-
-        <input
-          type="radio"
-          id="all"
-          class="radio"
-          v-model="showAllTask"
-          :value="true"
-          data-testid="filterAll"
-          @keyup.enter="() => (showAllTask = true)"
-          :aria-checked="!showAllTask"
-        />
         All Tasks
-      </label>
-      <label for="incomplete" class="radioLabel">
+      </button>
+      <button
+        class="filterBtn"
+        @click="() => (showAllTask = false)"
+        aria-label="show uncompleted tasks"
+      >
         <font-awesome-icon
           icon="fa-regular fa-square"
           v-if="showAllTask"
@@ -86,18 +83,8 @@ function handleDragend() {
           v-else
           aria-hidden="true"
         />
-        <input
-          type="radio"
-          id="incomplete"
-          class="radio"
-          v-model="showAllTask"
-          :value="false"
-          :aria-checked="showAllTask"
-          @keyup.enter="() => (showAllTask = false)"
-          data-testid="filterIncomplete"
-        />
         Uncompleted Tasks
-      </label>
+      </button>
     </div>
 
     <TransitionGroup name="task" tag="ul" class="container" id="taskContainer">
@@ -147,7 +134,7 @@ section {
   max-width: 800px;
 }
 
-.radioContainer {
+.btnContainer {
   display: flex;
   gap: 25px;
   justify-content: center;
@@ -155,16 +142,7 @@ section {
   padding: 10px 0;
 }
 
-.radio {
-  appearance: none;
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-.radioLabel {
+.filterBtn {
   display: flex;
   align-items: center;
   gap: 7px;
