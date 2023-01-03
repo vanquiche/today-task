@@ -48,9 +48,9 @@ button:disabled {
 
 @media screen and (max-width: 500px) {
   #app {
-    font-size: 0.85rem;
+    font-size: 16px;
   }
   input[type="text"] {
-    font-size: 0.85rem;
+    font-size: 16px;
   }
 }
