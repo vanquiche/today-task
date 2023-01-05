@@ -16,7 +16,7 @@ Check out the [live link here](https://todaytasklist.netlify.app/)!
 
 - Not a fan of dark themes? With the theme toggle, you can switch between light and dark to your heart's content!
 
-![today demo](https://res.cloudinary.com/dvrs8gsj3/image/upload/v1672664079/today-task/today-demo-1_yhio3z.png)
+![today demo](https://res.cloudinary.com/dvrs8gsj3/image/upload/v1672898156/today-task/today-demo-2_a6jmvs.gif)
 
 ## Tech-Stack
 
