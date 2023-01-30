@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import { useTaskStore } from "@/stores/task";
-import { DateTime } from "luxon";
+import { DateTime, type WeekdayNumbers } from "luxon";
 
 describe("Task Store", () => {
   beforeEach(() => {
@@ -57,14 +57,15 @@ describe("Task Store", () => {
 
   it("get days/dates with tasks", () => {
     const taskStore = useTaskStore();
+    const testDates: WeekdayNumbers[] = [];
     const dt = DateTime;
     [...Array(3)].forEach((_, i) => {
-      taskStore.addTask(`Task ${i}`, dt.now().minus({ days: i }).toISO());
+      const date = dt.now().minus({ days: i });
+      taskStore.addTask(`Task ${i}`, date.toISO());
+      testDates.push(date.weekday);
     });
-    expect(taskStore.daysWithTasks).toStrictEqual([
-      dt.now().weekday,
-      dt.now().minus({ days: 1 }).weekday,
-      dt.now().minus({ days: 2 }).weekday,
-    ]);
+    expect(taskStore.daysWithTasks).toStrictEqual(
+      testDates.sort((a, b) => b - a)
+    );
   });
 });

@@ -55,6 +55,7 @@ function handleDragend() {
         class="filterBtn"
         @click="() => (showAllTask = true)"
         aria-label="show all tasks"
+        data-testid="filterNone"
       >
         <font-awesome-icon
           icon="fa-regular fa-square"
@@ -72,6 +73,7 @@ function handleDragend() {
         class="filterBtn"
         @click="() => (showAllTask = false)"
         aria-label="show uncompleted tasks"
+        data-testid="filterIncomplete"
       >
         <font-awesome-icon
           icon="fa-regular fa-square"
