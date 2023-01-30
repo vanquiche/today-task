@@ -11,6 +11,7 @@ import DateRange from "./components/DateRange.vue";
 // store
 import { useTaskStore } from "@/stores/task";
 import ModalDialog from "./components/ModalDialog.vue";
+import type { TaskType } from "./types";
 // store
 const taskStore = useTaskStore();
 
@@ -68,8 +69,14 @@ provide("theme", theme);
 
 onMounted(() => {
   const storage = localStorage.getItem("todayTask");
+  // check if is date of latest task is in this week
   if (storage) {
-    taskStore.tasks = JSON.parse(storage);
+    const currentWeek = dt.now().weekNumber;
+    // filter out task that is not within the current week
+    const tasks = JSON.parse(storage).filter(
+      (task: TaskType) => dt.fromISO(task.createdAt).weekNumber === currentWeek
+    );
+    taskStore.tasks = tasks;
   }
 });
 </script>
