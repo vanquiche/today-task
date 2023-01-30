@@ -46,6 +46,7 @@ const toggleTheme = ref(true);
 const theme = computed(() => (toggleTheme.value ? darkTheme : lightTheme));
 function handleToggleSwitch() {
   toggleTheme.value = !toggleTheme.value;
+  localStorage.setItem("todayTheme", JSON.stringify(toggleTheme.value));
 }
 
 const selectedTasks = computed(() =>
@@ -69,6 +70,7 @@ provide("theme", theme);
 
 onMounted(() => {
   const storage = localStorage.getItem("todayTask");
+  const theme = localStorage.getItem("todayTheme");
   // check if is date of latest task is in this week
   if (storage) {
     const currentWeek = dt.now().weekNumber;
@@ -77,6 +79,10 @@ onMounted(() => {
       (task: TaskType) => dt.fromISO(task.createdAt).weekNumber === currentWeek
     );
     taskStore.tasks = tasks;
+  }
+
+  if (theme) {
+    toggleTheme.value = JSON.parse(theme);
   }
 });
 </script>
