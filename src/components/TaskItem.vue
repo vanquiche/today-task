@@ -107,6 +107,8 @@ button {
   width: 90%;
   overflow-x: hidden;
   padding: 0 10px;
+  display: flex;
+  align-items: center;
 }
 
 input {
@@ -127,6 +129,7 @@ input:focus {
 
 p {
   word-wrap: break-word;
+  /* outline: 1px solid red; */
 }
 
 .task {
