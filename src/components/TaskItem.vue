@@ -111,6 +111,10 @@ button {
   align-items: center;
 }
 
+form {
+  width: 100%;
+}
+
 input {
   width: 100%;
   font-size: 0.8rem;
