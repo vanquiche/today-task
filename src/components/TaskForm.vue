@@ -6,7 +6,7 @@ import type { DateTime as DateTimeType } from "luxon";
 import { DateTime } from "luxon";
 const dt = DateTime;
 const taskStore = useTaskStore();
-const today = dt.now().weekday;
+let today = dt.now().weekday;
 const theme = inject<ThemeType>("theme");
 const props = withDefaults(
   defineProps<{ selectedDate: DateTimeType["weekday"] }>(),
@@ -21,6 +21,13 @@ function submitTask() {
 const disableInput = computed(() =>
   props.selectedDate !== today ? true : false
 );
+
+function checkDate() {
+  if (today !== dt.now().weekday) {
+    taskStore.addTask("null");
+    today = dt.now().weekday;
+  }
+}
 </script>
 
 <template>
@@ -34,6 +41,7 @@ const disableInput = computed(() =>
       }"
       v-model="taskInput"
       :placeholder="disableInput ? '...' : 'do something today'"
+      @focus="checkDate"
       autocomplete="off"
       maxlength="135"
       :disabled="disableInput"

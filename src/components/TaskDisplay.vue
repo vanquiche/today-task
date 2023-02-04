@@ -92,7 +92,7 @@ function handleDragend() {
     <TransitionGroup name="task" tag="ul" class="container" id="taskContainer">
       <li
         class="task"
-        v-for="(task, index) in tasks"
+        v-for="(task, index) in tasks.filter((t) => t.task !== 'null')"
         :key="task.id"
         :style="{
           backgroundColor: index % 2 === 0 ? theme.inputBgColor : '',
