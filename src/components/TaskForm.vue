@@ -24,8 +24,7 @@ const disableInput = computed(() =>
 
 function checkDate() {
   if (today !== dt.now().weekday) {
-    taskStore.addTask("null");
-    today = dt.now().weekday;
+    location.reload();
   }
 }
 </script>
